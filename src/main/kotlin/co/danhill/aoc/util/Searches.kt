@@ -66,7 +66,7 @@ private fun <T> Grid<T>.aStarSearch(
     error("End never found")
 }
 
-private class Node(
+private data class Node(
     val point: Point,
 ) : Comparable<Node> {
     var parent: Node? = null
