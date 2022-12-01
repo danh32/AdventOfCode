@@ -13,6 +13,6 @@ abstract class Day<I> {
     }
 
     abstract fun parseInput(input: Sequence<String>) : I
-    abstract fun part1(input: I): String
-    abstract fun part2(input: I): String
+    abstract fun part1(input: I): Any
+    abstract fun part2(input: I): Any
 }
