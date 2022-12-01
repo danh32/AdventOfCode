@@ -65,7 +65,7 @@ private class MapGrid<T>(
 
 fun <T> gridOf(): Grid<T> = MapGrid()
 
-fun Sequence<String>.toIntGrid(): Grid<Int> {
+fun Collection<String>.toIntGrid(): Grid<Int> {
     val grid = gridOf<Int>()
     forEachIndexed { y, line ->
         line.forEachIndexed { x, c ->

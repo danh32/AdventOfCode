@@ -1,6 +1,8 @@
 package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
+import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.lines
 import java.math.BigDecimal
 
 fun main() {
@@ -9,7 +11,7 @@ fun main() {
 
 object Day06 : Day<MutableList<BigDecimal>>() {
 
-    override fun parseInput(input: Sequence<String>): MutableList<BigDecimal> {
+    override fun parseInput(input: Input): MutableList<BigDecimal> {
         val days = mutableListOf(
             BigDecimal.ZERO,
             BigDecimal.ZERO,
@@ -23,7 +25,7 @@ object Day06 : Day<MutableList<BigDecimal>>() {
             BigDecimal.ZERO,
         )
 
-        input.first().split(',')
+        input.lines.first().split(',')
             .map { it.toInt() }
             .forEach { day ->
                 days[day]++

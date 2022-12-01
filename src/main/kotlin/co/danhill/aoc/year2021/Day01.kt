@@ -1,6 +1,8 @@
 package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
+import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.lines
 
 fun main() {
     Day01.run("2021/01.txt")
@@ -8,8 +10,8 @@ fun main() {
 
 object Day01 : Day<List<Int>>() {
 
-    override fun parseInput(input: Sequence<String>): List<Int> {
-        return input.map { it.toInt() }.toList()
+    override fun parseInput(input: Input): List<Int> {
+        return input.lines.map { it.toInt() }
     }
 
     override fun part1(input: List<Int>): String {

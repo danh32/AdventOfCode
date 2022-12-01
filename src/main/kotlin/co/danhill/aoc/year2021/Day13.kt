@@ -1,9 +1,6 @@
 package co.danhill.aoc.year2021
 
-import co.danhill.aoc.util.Day
-import co.danhill.aoc.util.Point
-import co.danhill.aoc.util.x
-import co.danhill.aoc.util.y
+import co.danhill.aoc.util.*
 
 fun main() {
     Day13.run("2021/13.txt")
@@ -11,8 +8,8 @@ fun main() {
 
 object Day13 : Day<Pair<MutableSet<Point>, List<Day13.Fold>>>() {
 
-    override fun parseInput(input: Sequence<String>): Pair<MutableSet<Point>, List<Fold>> {
-        val list = input.toList()
+    override fun parseInput(input: Input): Pair<MutableSet<Point>, List<Fold>> {
+        val list = input.lines
         val emptyIndex = list.indexOf("")
         val points = list.subList(0, emptyIndex)
             .map { line ->

@@ -9,10 +9,10 @@ abstract class Day<I> {
     }
 
     private fun parseInput(filename: String): I {
-        return readFile(filename).useLines(block = this::parseInput)
+        return parseInput(readFile(filename))
     }
 
-    abstract fun parseInput(input: Sequence<String>) : I
+    abstract fun parseInput(input: Input) : I
     abstract fun part1(input: I): Any
     abstract fun part2(input: I): Any
 }

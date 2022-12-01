@@ -1,9 +1,6 @@
 package co.danhill.aoc.year2021
 
-import co.danhill.aoc.util.Day
-import co.danhill.aoc.util.Grid
-import co.danhill.aoc.util.Point
-import co.danhill.aoc.util.gridOf
+import co.danhill.aoc.util.*
 import java.util.UUID
 
 fun main() {
@@ -12,8 +9,8 @@ fun main() {
 
 object Day04 : Day<Pair<List<Int>, List<Day04.Board>>>() {
 
-    override fun parseInput(input: Sequence<String>): Pair<List<Int>, List<Board>> {
-        val list = input.toList()
+    override fun parseInput(input: Input): Pair<List<Int>, List<Board>> {
+        val list = input.lines
         val drawnNumbers: List<Int> = list.first().split(',').map { it.toInt() }
         val boards = list.subList(2, list.size)
             .windowed(5, step = 6)

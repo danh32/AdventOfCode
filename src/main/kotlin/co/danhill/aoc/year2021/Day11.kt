@@ -1,10 +1,6 @@
 package co.danhill.aoc.year2021
 
-import co.danhill.aoc.util.Day
-import co.danhill.aoc.util.Grid
-import co.danhill.aoc.util.Point
-import co.danhill.aoc.util.gridOf
-import co.danhill.aoc.util.neighbors
+import co.danhill.aoc.util.*
 
 fun main() {
     Day11.run("2021/11.txt")
@@ -12,9 +8,9 @@ fun main() {
 
 object Day11 : Day<Grid<Int>>() {
 
-    override fun parseInput(input: Sequence<String>): Grid<Int> {
+    override fun parseInput(input: Input): Grid<Int> {
         val grid = gridOf<Int>()
-        input.forEachIndexed { y, line ->
+        input.lines.forEachIndexed { y, line ->
             line.forEachIndexed { x, c ->
                 grid[x to y] = c.digitToInt()
             }

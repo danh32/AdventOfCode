@@ -1,23 +1,19 @@
 package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
+import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.groupedText
 
-fun main() {
-    Day01.run("2022/01.txt")
-}
+fun main() = Day01.run("2022/01.txt")
 
 object Day01 : Day<List<Int>>() {
 
-    override fun parseInput(input: Sequence<String>): List<Int> {
+    override fun parseInput(input: Input): List<Int> {
         return input
-            .map { it.toIntOrNull() }
-            .fold(mutableListOf(0)) { sumsList, nextInt ->
-                if (nextInt == null) {
-                    sumsList += 0
-                } else {
-                    sumsList[sumsList.lastIndex] += nextInt
-                }
-                sumsList
+            .groupedText
+            .map { elfHoldings ->
+                elfHoldings.split("\n")
+                    .sumOf { it.toInt() }
             }
     }
 

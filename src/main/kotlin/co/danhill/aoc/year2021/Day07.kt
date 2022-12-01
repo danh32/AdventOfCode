@@ -1,6 +1,8 @@
 package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
+import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.lines
 import kotlin.math.absoluteValue
 
 fun main() {
@@ -9,8 +11,8 @@ fun main() {
 
 object Day07 : Day<List<Int>>() {
 
-    override fun parseInput(input: Sequence<String>): List<Int> {
-        return input.first().split(',').map { it.toInt() }.sorted()
+    override fun parseInput(input: Input): List<Int> {
+        return input.lines.first().split(',').map { it.toInt() }.sorted()
     }
 
     override fun part1(input: List<Int>): String {

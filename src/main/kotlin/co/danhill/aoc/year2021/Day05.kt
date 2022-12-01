@@ -1,9 +1,6 @@
 package co.danhill.aoc.year2021
 
-import co.danhill.aoc.util.Day
-import co.danhill.aoc.util.Grid
-import co.danhill.aoc.util.Point
-import co.danhill.aoc.util.gridOf
+import co.danhill.aoc.util.*
 
 fun main() {
     // 6007, 19349
@@ -12,8 +9,8 @@ fun main() {
 
 object Day05 : Day<List<String>>() {
 
-    override fun parseInput(input: Sequence<String>): List<String> {
-        return input.toList()
+    override fun parseInput(input: Input): List<String> {
+        return input.lines
     }
 
     override fun part1(input: List<String>): String {

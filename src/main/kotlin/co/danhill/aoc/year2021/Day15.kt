@@ -1,9 +1,6 @@
 package co.danhill.aoc.year2021
 
-import co.danhill.aoc.util.Day
-import co.danhill.aoc.util.Grid
-import co.danhill.aoc.util.findPath
-import co.danhill.aoc.util.toIntGrid
+import co.danhill.aoc.util.*
 
 fun main() {
     Day15.run("2021/15.txt")
@@ -11,8 +8,8 @@ fun main() {
 
 object Day15 : Day<Grid<Int>>() {
 
-    override fun parseInput(input: Sequence<String>): Grid<Int> {
-        return input.toIntGrid()
+    override fun parseInput(input: Input): Grid<Int> {
+        return input.lines.toIntGrid()
     }
 
     override fun part1(input: Grid<Int>): String {
