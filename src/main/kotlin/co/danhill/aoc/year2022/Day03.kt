@@ -27,7 +27,7 @@ object Day03 : Day<List<Rucksack>>() {
             .sumOf { rucksacks ->
                 rucksacks.first()
                     .first { item ->
-                        rucksacks.takeLast(2).all { it.contains(item) }
+                        rucksacks.subList(1, rucksacks.size).all { it.contains(item) }
                     }
                     .priority
             }
