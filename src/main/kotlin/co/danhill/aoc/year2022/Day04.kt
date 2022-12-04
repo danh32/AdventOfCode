@@ -12,9 +12,8 @@ object Day04 : Day<List<Assignments>>() {
 
     override fun parseInput(input: Input): List<Assignments> {
         return input.lines.map { line ->
-            val (e1, e2) = line.split(',').map { range ->
-                val (start, end) = range.split('-')
-                    .map { it.toInt() }
+            val (e1, e2) = line.split(',').map { assignment ->
+                val (start, end) = assignment.split('-').map { it.toInt() }
                 start..end
             }
             e1 to e2
@@ -23,7 +22,7 @@ object Day04 : Day<List<Assignments>>() {
 
     override fun part1(input: List<Assignments>): Any {
         return input.count { (a, b) ->
-            a.contains(b) || b.contains(a)
+            a in b || b in a
         }
     }
 
@@ -31,14 +30,11 @@ object Day04 : Day<List<Assignments>>() {
         return input.count { (a, b) -> a.overlaps(b) }
     }
 
-    private fun IntRange.contains(other: IntRange): Boolean {
-        return this.contains(other.first) && this.contains(other.last)
+    private operator fun IntRange.contains(other: IntRange): Boolean {
+        return other.first in this && other.last in this
     }
 
     private fun IntRange.overlaps(other: IntRange): Boolean {
-        return this.contains(other.first)
-                || this.contains(other.last)
-                || other.contains(this.first)
-                || other.contains(this.last)
+        return other.first in this || other.last in this || first in other || last in other
     }
 }
