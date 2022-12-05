@@ -3,9 +3,8 @@ package co.danhill.aoc.util
 abstract class Day<I> {
 
     fun run(filename: String) {
-        val input = parseInput(filename)
-        println("Part 1: ${part1(input)}")
-        println("Part 2: ${part2(input)}")
+        println("Part 1: ${part1(parseInput(filename))}")
+        println("Part 2: ${part2(parseInput(filename))}")
     }
 
     private fun parseInput(filename: String): I {
