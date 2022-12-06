@@ -29,7 +29,7 @@ object Day06 : Day<String>() {
         return withIndex()
             .windowed(count)
             .first { indexedChars ->
-                indexedChars.map { it.value }.toSet().size == count
+                indexedChars.distinctBy { it.value }.size == count
             }
             .last()
             .index + 1
