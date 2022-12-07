@@ -2,13 +2,14 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.TreeNode
 import co.danhill.aoc.util.lines
 
 fun main() = Day07.run("2022/07.txt")
 
-object Day07 : Day<Day07.FileType.Directory>() {
-    override fun parseInput(input: Input): FileType.Directory {
-        val root = FileType.Directory("/", mutableListOf())
+object Day07 : Day<TreeNode<Day07.FileType>>() {
+    override fun parseInput(input: Input): TreeNode<FileType> {
+        val root = TreeNode<FileType>(FileType.Directory("/"))
         var currentDirectory = root
 
         input.lines
@@ -21,20 +22,20 @@ object Day07 : Day<Day07.FileType.Directory>() {
                             currentDirectory = when (val dirName = splitLine[2]) {
                                 "/" -> root
                                 ".." -> currentDirectory.parent
-                                else -> currentDirectory.findDirectory(dirName)
+                                else -> currentDirectory.children.first { it.data.name == dirName }
                             }
                         }
                         "ls" -> {}
                         else -> error("Error parsing line $line")
                     }
                     "dir" -> {
-                        val childDir = FileType.Directory(b, mutableListOf())
+                        val childDir = TreeNode<FileType>(FileType.Directory(b))
                         childDir.parent = currentDirectory
-                        currentDirectory.children += childDir
+                        currentDirectory.addChild(childDir)
                     }
                     else -> {
                         a.toLongOrNull()?.let { size ->
-                            currentDirectory.children += FileType.File(b, size)
+                            currentDirectory.addChild(TreeNode(FileType.File(b, size)))
                         } ?: error("Error parsing line $line")
                     }
                 }
@@ -43,16 +44,18 @@ object Day07 : Day<Day07.FileType.Directory>() {
         return root
     }
 
-    override fun part1(input: FileType.Directory): Any {
+    override fun part1(input: TreeNode<FileType>): Any {
         return input.asSequence()
+            .filter { it.data is FileType.Directory }
             .map { it.size() }
             .filter { it <= 100_000 }
             .sum()
     }
 
-    override fun part2(input: FileType.Directory): Any {
+    override fun part2(input: TreeNode<FileType>): Any {
         val needToFree = 30_000_000 - (70_000_000 - input.size())
         return input.asSequence()
+            .filter { it.data is FileType.Directory }
             .map { it.size() }
             .filter { it >= needToFree }
             .min()
@@ -60,29 +63,17 @@ object Day07 : Day<Day07.FileType.Directory>() {
 
     sealed class FileType(val name: String) {
 
-        class Directory(name: String, val children: MutableList<FileType>): FileType(name) {
-            lateinit var parent: Directory
-
-            fun findDirectory(name: String) = children.first { it.name == name } as Directory
-
+        class Directory(name: String): FileType(name) {
             override fun toString(): String = "$name (dir)"
-
-            fun asSequence(): Sequence<Directory> {
-                return sequence {
-                    yield(this@Directory)
-                    children.filterIsInstance<Directory>()
-                        .forEach { child -> yieldAll(child.asSequence()) }
-                }
-            }
         }
 
         class File(name: String, val size: Long) : FileType(name) {
             override fun toString(): String = "$name (file, size=$size)"
         }
+    }
 
-        fun size(): Long = when (this) {
-                is File -> size
-                is Directory -> children.sumOf { it.size() }
-        }
+    private fun TreeNode<FileType>.size(): Long = when (data) {
+        is FileType.File -> data.size
+        is FileType.Directory -> children.sumOf { it.size() }
     }
 }
