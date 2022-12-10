@@ -4,18 +4,72 @@ import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
 import co.danhill.aoc.util.lines
 
-fun main() = Day10.run("2022/10_test.txt")
+fun main() = Day10.run("2022/10.txt")
 
-object Day10 : Day<List<String>>() {
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
+object Day10 : Day<Input>() {
+    override fun parseInput(input: Input): Input = input
+
+    private fun Input.toInstructions() = lines.map { line ->
+        val splitLine = line.split(' ')
+        when (splitLine.first()) {
+            "addx" -> Instruction.AddX(splitLine.last().toLong())
+            "noop" -> Instruction.Noop
+            else -> error("Unknown command $line")
+        }
     }
 
-    override fun part1(input: List<String>): Any {
-        TODO()
+    override fun part1(input: Input): Any {
+        val instructions = input.toInstructions()
+        val interestingCycles = setOf(20, 60, 100, 140, 180, 220)
+        return runCPU(instructions)
+            .sumOf { (cycle, register) ->
+                if (cycle in interestingCycles) cycle * register
+                else 0
+            }
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO()
+    override fun part2(input: Input): Any {
+        val instructions = input.toInstructions()
+        runCPU(instructions)
+            .joinToString("") { (cycle, register) ->
+                val crtPixelIndex = (cycle - 1) % 40
+                when (crtPixelIndex - register) {
+                    in -1..1 -> "#"
+                    else -> "."
+                }
+            }
+            .chunked(40)
+            .take(6)
+            .forEach { println(it) }
+        return "^^^ See printed output image above ^^^"
+    }
+
+    private fun runCPU(instructions: List<Instruction>): Sequence<Pair<Int, Long>> {
+        var cycle = 1
+        var x: Long = 1
+        val program = instructions.toMutableList()
+        return sequence {
+            yield(cycle to x)
+
+            while (program.isNotEmpty()) {
+                when (val instruction = program.removeFirst()) {
+                    is Instruction.AddX -> {
+                        cycle++
+                        yield(cycle to x)
+                        x += instruction.value
+                        cycle++
+                    }
+
+                    Instruction.Noop -> cycle++
+                }
+
+                yield(cycle to x)
+            }
+        }
+    }
+
+    private sealed class Instruction {
+        object Noop : Instruction()
+        class AddX(val value: Long): Instruction()
     }
 }
