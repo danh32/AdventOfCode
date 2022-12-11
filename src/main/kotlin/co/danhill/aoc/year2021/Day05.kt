@@ -7,15 +7,11 @@ fun main() {
     Day05.run("2021/05.txt")
 }
 
-object Day05 : Day<List<String>>() {
+object Day05 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
+    override fun part1(input: Input): String {
         val grid = gridOf<Int>()
-        input.map { line ->
+        input.lines.map { line ->
             val split = line.split(" -> ", ",")
             val x1 = split[0].toInt()
             val y1 = split[1].toInt()
@@ -28,9 +24,9 @@ object Day05 : Day<List<String>>() {
         return "$count"
     }
 
-    override fun part2(input: List<String>): String {
+    override fun part2(input: Input): String {
         val grid = gridOf<Int>()
-        input.map { line ->
+        input.lines.map { line ->
             val split = line.split(" -> ", ",")
             val x1 = split[0].toInt()
             val y1 = split[1].toInt()

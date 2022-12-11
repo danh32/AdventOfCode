@@ -8,10 +8,10 @@ fun main() = Day04.run("2022/04.txt")
 
 private typealias Assignments = Pair<IntRange, IntRange>
 
-object Day04 : Day<List<Assignments>>() {
+object Day04 : Day {
 
-    override fun parseInput(input: Input): List<Assignments> {
-        return input.lines.map { line ->
+    private fun Input.parse(): List<Assignments> {
+        return lines.map { line ->
             val (e1, e2) = line.split(',').map { assignment ->
                 val (start, end) = assignment.split('-').map { it.toInt() }
                 start..end
@@ -20,14 +20,14 @@ object Day04 : Day<List<Assignments>>() {
         }
     }
 
-    override fun part1(input: List<Assignments>): Any {
-        return input.count { (a, b) ->
+    override fun part1(input: Input): Any {
+        return input.parse().count { (a, b) ->
             a in b || b in a
         }
     }
 
-    override fun part2(input: List<Assignments>): Any {
-        return input.count { (a, b) -> a.overlaps(b) }
+    override fun part2(input: Input): Any {
+        return input.parse().count { (a, b) -> a.overlaps(b) }
     }
 
     private operator fun IntRange.contains(other: IntRange): Boolean {

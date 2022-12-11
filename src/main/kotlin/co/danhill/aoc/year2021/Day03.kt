@@ -8,30 +8,28 @@ fun main() {
     Day03.run("2021/03.txt")
 }
 
-object Day03 : Day<List<String>>() {
+object Day03 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
-        val gamma = input.first().indices
-            .map { i -> input.findMostCommonAtIndex(i, tieBreaker = '1') }
+    override fun part1(input: Input): String {
+        val lines = input.lines
+        val gamma = lines.first().indices
+            .map { i -> lines.findMostCommonAtIndex(i, tieBreaker = '1') }
             .joinToString(separator = "")
             .toInt(2)
 
-        val epsilon = input.first().indices
-            .map { i -> input.findLeastCommonAtIndex(i, tieBreaker = '1') }
+        val epsilon = lines.first().indices
+            .map { i -> lines.findLeastCommonAtIndex(i, tieBreaker = '1') }
             .joinToString(separator = "")
             .toInt(2)
 
         return "$gamma * $epsilon = ${gamma * epsilon}"
     }
 
-    override fun part2(input: List<String>): String {
-        val oxygenBinary = search(input, 0, this::oxygenBitCriteriaSelector)
+    override fun part2(input: Input): String {
+        val lines = input.lines
+        val oxygenBinary = search(lines, 0, this::oxygenBitCriteriaSelector)
         val oxygen = Integer.parseInt(oxygenBinary, 2)
-        val co2Binary = search(input, 0, this::co2BitCriteriaSelector)
+        val co2Binary = search(lines, 0, this::co2BitCriteriaSelector)
         val co2 = Integer.parseInt(co2Binary, 2)
         return "$oxygen * $co2 = ${oxygen * co2}"
     }

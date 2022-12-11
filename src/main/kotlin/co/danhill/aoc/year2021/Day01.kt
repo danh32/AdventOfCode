@@ -8,14 +8,13 @@ fun main() {
     Day01.run("2021/01.txt")
 }
 
-object Day01 : Day<List<Int>>() {
+object Day01 : Day {
 
-    override fun parseInput(input: Input): List<Int> {
-        return input.lines.map { it.toInt() }
-    }
+    private fun Input.parse(): List<Int> = lines.map { it.toInt() }
 
-    override fun part1(input: List<Int>): String {
+    override fun part1(input: Input): String {
         return input
+            .parse()
             .fold(0 to Int.MAX_VALUE) { (count, previous), current ->
                 val newCount = if (current > previous) count + 1 else count
                 newCount to current
@@ -23,9 +22,9 @@ object Day01 : Day<List<Int>>() {
             .toString()
     }
 
-    override fun part2(input: List<Int>): String {
+    override fun part2(input: Input): String {
         val windowSize = 3
-        val depths = input.toList()
+        val depths = input.parse().toList()
         val windowSums = (0..depths.size - windowSize).map { i ->
             (i until i + windowSize).sumOf { j -> depths[j] }
         }

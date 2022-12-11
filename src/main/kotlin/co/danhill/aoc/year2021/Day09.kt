@@ -6,11 +6,11 @@ fun main() {
     Day09.run("2021/09.txt")
 }
 
-object Day09 : Day<Grid<Int>>() {
+object Day09 : Day {
 
-    override fun parseInput(input: Input): Grid<Int> {
+    private fun Input.parse(): Grid<Int> {
         val points = gridOf<Int>()
-        input.lines.forEachIndexed { y, line ->
+        lines.forEachIndexed { y, line ->
             line.forEachIndexed { x, c ->
                 points[x to y] = c.digitToInt()
             }
@@ -18,15 +18,17 @@ object Day09 : Day<Grid<Int>>() {
         return points
     }
 
-    override fun part1(input: Grid<Int>): String {
-        val lows = getLows(input)
-        val sum = lows.sumOf { p -> input[p]!! + 1 }
+    override fun part1(input: Input): String {
+        val grid = input.parse()
+        val lows = getLows(grid)
+        val sum = lows.sumOf { p -> grid[p]!! + 1 }
         return "$sum"
     }
 
-    override fun part2(input: Grid<Int>): String {
-        val lows = getLows(input)
-        val basins = getBasins(input, lows)
+    override fun part2(input: Input): String {
+        val grid = input.parse()
+        val lows = getLows(grid)
+        val basins = getBasins(grid, lows)
         val score = basins.map { it.points.size }
             .sortedDescending()
             .take(3)

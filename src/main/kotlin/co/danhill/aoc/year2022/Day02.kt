@@ -8,22 +8,21 @@ private typealias Round = Pair<Char, Char>
 
 fun main() = Day02.run("2022/02.txt")
 
-object Day02 : Day<List<Round>>() {
+object Day02 : Day {
 
-    override fun parseInput(input: Input): List<Round> {
-        return input.lines
-            .map { round ->
-                val (opponent, me) = round.split(' ')
-                opponent.single() to me.single()
-            }
+    private fun Input.parse(): List<Round> {
+        return lines.map { round ->
+            val (opponent, me) = round.split(' ')
+            opponent.single() to me.single()
+        }
     }
 
-    override fun part1(input: List<Round>): Any {
-        return input.sumOf { it.second.toPlay().score(it.first.toPlay()) }
+    override fun part1(input: Input): Any {
+        return input.parse().sumOf { it.second.toPlay().score(it.first.toPlay()) }
     }
 
-    override fun part2(input: List<Round>): Any {
-        return input.sumOf { round ->
+    override fun part2(input: Input): Any {
+        return input.parse().sumOf { round ->
             val result = round.second.toResult()
             val myPlay = result.getMyPlay(round.first.toPlay())
             result.score + myPlay.score
@@ -37,13 +36,14 @@ object Day02 : Day<List<Round>>() {
         ;
 
         fun getMyPlay(opponentPlay: Play): Play = when (this) {
-            WIN -> when(opponentPlay) {
+            WIN -> when (opponentPlay) {
                 Play.ROCK -> Play.PAPER
                 Play.PAPER -> Play.SCISSORS
                 Play.SCISSORS -> Play.ROCK
             }
+
             DRAW -> opponentPlay
-            LOSE -> when(opponentPlay) {
+            LOSE -> when (opponentPlay) {
                 Play.ROCK -> Play.SCISSORS
                 Play.PAPER -> Play.ROCK
                 Play.SCISSORS -> Play.PAPER
@@ -57,7 +57,7 @@ object Day02 : Day<List<Round>>() {
         SCISSORS(3),
         ;
 
-        fun beats(other: Play): Boolean = when(this) {
+        fun beats(other: Play): Boolean = when (this) {
             ROCK -> other == SCISSORS
             PAPER -> other == ROCK
             SCISSORS -> other == PAPER

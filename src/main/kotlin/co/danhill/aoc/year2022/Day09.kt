@@ -4,23 +4,23 @@ import co.danhill.aoc.util.*
 
 fun main() = Day09.run("2022/09.txt")
 
-object Day09 : Day<List<Pair<Char, Int>>>() {
+object Day09 : Day {
 
-    override fun parseInput(input: Input): List<Pair<Char, Int>> {
-        return input.lines.map { line ->
+    private fun Input.parse(): List<Pair<Char, Int>> {
+        return lines.map { line ->
             val (a, b) = line.split(' ')
             a.single() to b.toInt()
         }
     }
 
-    override fun part1(input: List<Pair<Char, Int>>): Any {
+    override fun part1(input: Input): Any {
         val knots = MutableList(2) { 0 to 0 }
-        return runSimulation(input, knots)
+        return runSimulation(input.parse(), knots)
     }
 
-    override fun part2(input: List<Pair<Char, Int>>): Any {
+    override fun part2(input: Input): Any {
         val knots = MutableList(10) { 0 to 0 }
-        return runSimulation(input, knots)
+        return runSimulation(input.parse(), knots)
     }
 
     private fun runSimulation(input: List<Pair<Char, Int>>, knots: MutableList<Point>): Int {

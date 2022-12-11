@@ -3,7 +3,6 @@ package co.danhill.aoc.year2022
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
 import co.danhill.aoc.util.groupedText
-import co.danhill.aoc.util.lines
 
 fun main() = Day05.run("2022/05.txt")
 
@@ -12,10 +11,10 @@ private typealias Stacks = List<Stack>
 private typealias Move = Triple<Int, Int, Int>
 private typealias Foo = Pair<Stacks, List<Move>>
 
-object Day05 : Day<Foo>() {
+object Day05 : Day {
 
-    override fun parseInput(input: Input): Foo {
-        val (stacksText, movesText) = input.groupedText
+    private fun Input.parse(): Foo {
+        val (stacksText, movesText) = groupedText
         val stacks = mutableListOf<Stack>()
         val stacksLines = stacksText.split('\n')
         stacksLines.last().forEachIndexed { index, c ->
@@ -38,16 +37,16 @@ object Day05 : Day<Foo>() {
         return stacks to moves
     }
 
-    override fun part1(input: Foo): Any {
-        val (stacks, moves) = input
+    override fun part1(input: Input): Any {
+        val (stacks, moves) = input.parse()
         moves.forEach { move ->
             stacks.execute(move)
         }
         return stacks.topCrateString()
     }
 
-    override fun part2(input: Foo): Any {
-        val (stacks, moves) = input
+    override fun part2(input: Input): Any {
+        val (stacks, moves) = input.parse()
         moves.forEach { move ->
             stacks.execute(move) { it }
         }

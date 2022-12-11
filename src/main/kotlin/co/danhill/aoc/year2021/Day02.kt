@@ -8,7 +8,7 @@ fun main() {
     Day02.run("2021/02.txt")
 }
 
-object Day02 : Day<List<Day02.Step>>() {
+object Day02 : Day {
 
     data class Step(
         val direction: Direction,
@@ -21,9 +21,8 @@ object Day02 : Day<List<Day02.Step>>() {
         UP,
     }
 
-    override fun parseInput(input: Input): List<Step> {
-        return input
-            .lines
+    private fun Input.parse(): List<Step> {
+        return lines
             .map { line ->
                 val (direction, magnitude) = line.split(' ')
                 Step(
@@ -33,10 +32,10 @@ object Day02 : Day<List<Day02.Step>>() {
             }
     }
 
-    override fun part1(input: List<Step>): String {
+    override fun part1(input: Input): String {
         var depth = 0
         var position = 0
-        input.forEach { (direction, magnitude) ->
+        input.parse().forEach { (direction, magnitude) ->
             when (direction) {
                 Direction.FORWARD -> position+= magnitude
                 Direction.DOWN -> depth+= magnitude
@@ -46,11 +45,11 @@ object Day02 : Day<List<Day02.Step>>() {
         return (depth * position).toString()
     }
 
-    override fun part2(input: List<Step>): String {
+    override fun part2(input: Input): String {
         var depth = 0
         var position = 0
         var aim = 0
-        input.forEach { (direction, magnitude) ->
+        input.parse().forEach { (direction, magnitude) ->
             when (direction) {
                 Direction.DOWN -> aim+= magnitude
                 Direction.UP -> aim-= magnitude

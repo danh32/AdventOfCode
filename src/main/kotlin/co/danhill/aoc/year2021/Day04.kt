@@ -7,10 +7,10 @@ fun main() {
     Day04.run("2021/04.txt")
 }
 
-object Day04 : Day<Pair<List<Int>, List<Day04.Board>>>() {
+object Day04 : Day {
 
-    override fun parseInput(input: Input): Pair<List<Int>, List<Board>> {
-        val list = input.lines
+    private fun Input.parse(): Pair<List<Int>, List<Board>> {
+        val list = lines
         val drawnNumbers: List<Int> = list.first().split(',').map { it.toInt() }
         val boards = list.subList(2, list.size)
             .windowed(5, step = 6)
@@ -25,8 +25,8 @@ object Day04 : Day<Pair<List<Int>, List<Day04.Board>>>() {
         return drawnNumbers to boards
     }
 
-    override fun part1(input: Pair<List<Int>, List<Board>>): String {
-        val (drawnNumbers, boards) = input
+    override fun part1(input: Input): String {
+        val (drawnNumbers, boards) = input.parse()
         for (number in drawnNumbers) {
             for (board in boards) {
                 board.callNumber(number)
@@ -38,8 +38,8 @@ object Day04 : Day<Pair<List<Int>, List<Day04.Board>>>() {
         error("No winner")
     }
 
-    override fun part2(input: Pair<List<Int>, List<Board>>): String {
-        val (drawnNumbers, boards) = input
+    override fun part2(input: Input): String {
+        val (drawnNumbers, boards) = input.parse()
         val winningBoards = mutableMapOf<UUID, Pair<Board, Int>>()
         for (number in drawnNumbers) {
             for (board in boards) {

@@ -9,9 +9,9 @@ fun main() {
     Day06.run("2021/06.txt")
 }
 
-object Day06 : Day<MutableList<BigDecimal>>() {
+object Day06 : Day {
 
-    override fun parseInput(input: Input): MutableList<BigDecimal> {
+    private fun Input.parse(): MutableList<BigDecimal> {
         val days = mutableListOf(
             BigDecimal.ZERO,
             BigDecimal.ZERO,
@@ -25,7 +25,7 @@ object Day06 : Day<MutableList<BigDecimal>>() {
             BigDecimal.ZERO,
         )
 
-        input.lines.first().split(',')
+        lines.first().split(',')
             .map { it.toInt() }
             .forEach { day ->
                 days[day]++
@@ -34,12 +34,12 @@ object Day06 : Day<MutableList<BigDecimal>>() {
         return days
     }
 
-    override fun part1(input: MutableList<BigDecimal>): String {
-        return runSimulation(input, 80)
+    override fun part1(input: Input): String {
+        return runSimulation(input.parse(), 80)
     }
 
-    override fun part2(input: MutableList<BigDecimal>): String {
-        return runSimulation(input, 256)
+    override fun part2(input: Input): String {
+        return runSimulation(input.parse(), 256)
     }
 
     private fun runSimulation(days: MutableList<BigDecimal>, numDays: Int): String {

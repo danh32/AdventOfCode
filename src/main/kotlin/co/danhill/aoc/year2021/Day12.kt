@@ -8,20 +8,16 @@ fun main() {
     Day12.run("2021/12.txt")
 }
 
-object Day12 : Day<List<String>>() {
+object Day12 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
-        val startCave = parseCaves(input)
+    override fun part1(input: Input): String {
+        val startCave = parseCaves(input.lines)
         val paths = findPaths(listOf(startCave))
         return "${paths.size}"
     }
 
-    override fun part2(input: List<String>): String {
-        val startCave = parseCaves(input)
+    override fun part2(input: Input): String {
+        val startCave = parseCaves(input.lines)
         val paths = findPaths2(listOf(startCave))
         return "${paths.size}"
     }

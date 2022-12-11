@@ -8,14 +8,10 @@ fun main() {
     Day08.run("2021/08.txt")
 }
 
-object Day08 : Day<List<String>>() {
+object Day08 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
-        val count = input
+    override fun part1(input: Input): String {
+        val count = input.lines
             .map { line ->
                 val (_, outputs) = line.split(" | ")
                 outputs.split(' ')
@@ -33,8 +29,8 @@ object Day08 : Day<List<String>>() {
         return "$count"
     }
 
-    override fun part2(input: List<String>): String {
-        val lines = input
+    override fun part2(input: Input): String {
+        val lines = input.lines
             .map { line ->
                 val (i, o) = line.split(" | ")
                 val inputs = i.split(' ').map { word -> word.toCharArray().toList().sorted().joinToString("") }

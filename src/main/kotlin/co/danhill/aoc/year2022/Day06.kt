@@ -6,17 +6,13 @@ import co.danhill.aoc.util.text
 
 fun main() = Day06.run("2022/06.txt")
 
-object Day06 : Day<String>() {
-    override fun parseInput(input: Input): String {
-        return input.text
+object Day06 : Day {
+    override fun part1(input: Input): Any {
+        return input.text.startOfPacketMarkerIndex
     }
 
-    override fun part1(input: String): Any {
-        return input.startOfPacketMarkerIndex
-    }
-
-    override fun part2(input: String): Any {
-        return input.startOfMessageMarkerIndex
+    override fun part2(input: Input): Any {
+        return input.text.startOfMessageMarkerIndex
     }
 
     private val String.startOfPacketMarkerIndex: Int

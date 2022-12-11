@@ -6,9 +6,7 @@ import co.danhill.aoc.util.lines
 
 fun main() = Day10.run("2022/10.txt")
 
-object Day10 : Day<Input>() {
-    override fun parseInput(input: Input): Input = input
-
+object Day10 : Day {
     private fun Input.toInstructions() = lines.map { line ->
         val splitLine = line.split(' ')
         when (splitLine.first()) {

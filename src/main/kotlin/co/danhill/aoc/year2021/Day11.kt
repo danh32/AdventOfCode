@@ -6,11 +6,11 @@ fun main() {
     Day11.run("2021/11.txt")
 }
 
-object Day11 : Day<Grid<Int>>() {
+object Day11 : Day {
 
-    override fun parseInput(input: Input): Grid<Int> {
+    private fun Input.parse(): Grid<Int> {
         val grid = gridOf<Int>()
-        input.lines.forEachIndexed { y, line ->
+        lines.forEachIndexed { y, line ->
             line.forEachIndexed { x, c ->
                 grid[x to y] = c.digitToInt()
             }
@@ -18,15 +18,16 @@ object Day11 : Day<Grid<Int>>() {
         return grid
     }
 
-    override fun part1(input: Grid<Int>): String {
-        val flashes = (0 until 100).sumOf { step(input) }
+    override fun part1(input: Input): String {
+        val flashes = (0 until 100).sumOf { step(input.parse()) }
         return "$flashes"
     }
 
-    override fun part2(input: Grid<Int>): String {
+    override fun part2(input: Input): String {
+        val grid = input.parse()
         (0..Int.MAX_VALUE).forEach { i ->
-            val flashed = step(input)
-            if (flashed == input.keys.size) {
+            val flashed = step(grid)
+            if (flashed == grid.keys.size) {
                 return "${i + 1}"
             }
         }

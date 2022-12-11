@@ -8,22 +8,18 @@ fun main() = Day03.run("2022/03.txt")
 
 typealias Rucksack = String
 
-object Day03 : Day<List<Rucksack>>() {
+object Day03 : Day {
 
-    override fun parseInput(input: Input): List<Rucksack> {
-        return input.lines
-    }
-
-    override fun part1(input: List<Rucksack>): Any {
-        return input.sumOf { rucksack ->
+    override fun part1(input: Input): Any {
+        return input.lines.sumOf { rucksack ->
             rucksack.compartmentOne
                 .first { rucksack.compartmentTwo.contains(it) }
                 .priority
         }
     }
 
-    override fun part2(input: List<Rucksack>): Any {
-        return input.chunked(3)
+    override fun part2(input: Input): Any {
+        return input.lines.chunked(3)
             .sumOf { rucksacks ->
                 rucksacks.first()
                     .first { item ->

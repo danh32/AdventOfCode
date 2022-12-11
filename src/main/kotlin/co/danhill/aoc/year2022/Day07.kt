@@ -7,54 +7,58 @@ import co.danhill.aoc.util.lines
 
 fun main() = Day07.run("2022/07.txt")
 
-object Day07 : Day<TreeNode<Day07.FileType>>() {
-    override fun parseInput(input: Input): TreeNode<FileType> {
+object Day07 : Day {
+    private fun Input.parse(): TreeNode<FileType> {
         val root = TreeNode<FileType>(FileType.Directory("/"))
         var currentDirectory = root
 
-        input.lines
-            .map { line ->
-                val splitLine = line.split(' ')
-                val (a, b) = splitLine
-                when (a) {
-                    "$" -> when (b) {
-                        "cd" -> {
-                            currentDirectory = when (val dirName = splitLine[2]) {
-                                "/" -> root
-                                ".." -> currentDirectory.parent
-                                else -> currentDirectory.children.first { it.data.name == dirName }
-                            }
+        lines.map { line ->
+            val splitLine = line.split(' ')
+            val (a, b) = splitLine
+            when (a) {
+                "$" -> when (b) {
+                    "cd" -> {
+                        currentDirectory = when (val dirName = splitLine[2]) {
+                            "/" -> root
+                            ".." -> currentDirectory.parent
+                            else -> currentDirectory.children.first { it.data.name == dirName }
                         }
-                        "ls" -> {}
-                        else -> error("Error parsing line $line")
                     }
-                    "dir" -> {
-                        val childDir = TreeNode<FileType>(FileType.Directory(b))
-                        childDir.parent = currentDirectory
-                        currentDirectory.addChild(childDir)
-                    }
-                    else -> {
-                        a.toLongOrNull()?.let { size ->
-                            currentDirectory.addChild(TreeNode(FileType.File(b, size)))
-                        } ?: error("Error parsing line $line")
-                    }
+
+                    "ls" -> {}
+                    else -> error("Error parsing line $line")
+                }
+
+                "dir" -> {
+                    val childDir = TreeNode<FileType>(FileType.Directory(b))
+                    childDir.parent = currentDirectory
+                    currentDirectory.addChild(childDir)
+                }
+
+                else -> {
+                    a.toLongOrNull()?.let { size ->
+                        currentDirectory.addChild(TreeNode(FileType.File(b, size)))
+                    } ?: error("Error parsing line $line")
                 }
             }
+        }
 
         return root
     }
 
-    override fun part1(input: TreeNode<FileType>): Any {
-        return input.asSequence()
+    override fun part1(input: Input): Any {
+        return input.parse()
+            .asSequence()
             .filter { it.data is FileType.Directory }
             .map { it.size() }
             .filter { it <= 100_000 }
             .sum()
     }
 
-    override fun part2(input: TreeNode<FileType>): Any {
-        val needToFree = 30_000_000 - (70_000_000 - input.size())
-        return input.asSequence()
+    override fun part2(input: Input): Any {
+        val parsed = input.parse()
+        val needToFree = 30_000_000 - (70_000_000 - parsed.size())
+        return parsed.asSequence()
             .filter { it.data is FileType.Directory }
             .map { it.size() }
             .filter { it >= needToFree }
@@ -63,7 +67,7 @@ object Day07 : Day<TreeNode<Day07.FileType>>() {
 
     sealed class FileType(val name: String) {
 
-        class Directory(name: String): FileType(name) {
+        class Directory(name: String) : FileType(name) {
             override fun toString(): String = "$name (dir)"
         }
 

@@ -6,8 +6,7 @@ import co.danhill.aoc.util.groupedText
 
 fun main() = Day11.run("2022/11.txt")
 
-object Day11 : Day<Input>() {
-    override fun parseInput(input: Input): Input = input
+object Day11 : Day {
 
     private fun Input.toMonkeys() = this.groupedText
         .map { group ->

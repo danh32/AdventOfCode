@@ -6,10 +6,10 @@ fun main() {
     Day13.run("2021/13.txt")
 }
 
-object Day13 : Day<Pair<MutableSet<Point>, List<Day13.Fold>>>() {
+object Day13 : Day {
 
-    override fun parseInput(input: Input): Pair<MutableSet<Point>, List<Fold>> {
-        val list = input.lines
+    private fun Input.parse(): Pair<MutableSet<Point>, List<Fold>> {
+        val list = lines
         val emptyIndex = list.indexOf("")
         val points = list.subList(0, emptyIndex)
             .map { line ->
@@ -27,15 +27,15 @@ object Day13 : Day<Pair<MutableSet<Point>, List<Day13.Fold>>>() {
         return points to folds
     }
 
-    override fun part1(input: Pair<MutableSet<Point>, List<Fold>>): String {
-        val (points, folds) = input
+    override fun part1(input: Input): String {
+        val (points, folds) = input.parse()
         val firstFold = folds.first()
         processFold(points, firstFold)
         return "${points.size}"
     }
 
-    override fun part2(input: Pair<MutableSet<Point>, List<Fold>>): String {
-        val (points, folds) = input
+    override fun part2(input: Input): String {
+        val (points, folds) = input.parse()
 
         folds.forEach { processFold(points, it) }
 

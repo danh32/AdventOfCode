@@ -9,19 +9,15 @@ fun main() {
     Day10.run("2021/10.txt")
 }
 
-object Day10 : Day<List<String>>() {
+object Day10 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
-        val sum = input.sumOf { isCorrupted(it) }
+    override fun part1(input: Input): String {
+        val sum = input.lines.sumOf { isCorrupted(it) }
         return "$sum"
     }
 
-    override fun part2(input: List<String>): String {
-        val completionStrings = input
+    override fun part2(input: Input): String {
+        val completionStrings = input.lines
             .filter { isCorrupted(it) == 0 }
             .map { getCompletionLine(it) }
 

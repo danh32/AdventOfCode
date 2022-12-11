@@ -6,34 +6,34 @@ fun main() {
     Day15.run("2021/15.txt")
 }
 
-object Day15 : Day<Grid<Int>>() {
+object Day15 : Day {
 
-    override fun parseInput(input: Input): Grid<Int> {
-        return input.lines.toIntGrid()
-    }
+    private fun Input.parse(): Grid<Int> = lines.toIntGrid()
 
-    override fun part1(input: Grid<Int>): String {
+    override fun part1(input: Input): String {
+        val grid = input.parse()
         val start = 0 to 0
-        val end = input.maxX to input.maxY
-        val path = input.findPath(
+        val end = grid.maxX to grid.maxY
+        val path = grid.findPath(
             start,
             end,
-            movementCost = { input[it]!! },
+            movementCost = { grid[it]!! },
         )
-        val risk = path.sumOf { if (it == start) 0 else input[it]!! }
+        val risk = path.sumOf { if (it == start) 0 else grid[it]!! }
         return "$risk"
     }
 
-    override fun part2(input: Grid<Int>): String {
-        input.embiggen()
+    override fun part2(input: Input): String {
+        val grid = input.parse()
+        grid.embiggen()
         val start = 0 to 0
-        val end = input.maxX to input.maxY
-        val path = input.findPath(
+        val end = grid.maxX to grid.maxY
+        val path = grid.findPath(
             start,
             end,
-            movementCost = { input[it]!! },
+            movementCost = { grid[it]!! },
         )
-        val risk = path.sumOf { if (it == start) 0 else input[it]!! }
+        val risk = path.sumOf { if (it == start) 0 else grid[it]!! }
         return "$risk"
     }
 

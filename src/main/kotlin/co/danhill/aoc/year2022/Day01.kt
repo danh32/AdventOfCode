@@ -6,25 +6,24 @@ import co.danhill.aoc.util.groupedText
 
 fun main() = Day01.run("2022/01.txt")
 
-object Day01 : Day<List<Int>>() {
+object Day01 : Day {
 
-    override fun parseInput(input: Input): List<Int> {
-        return input
-            .groupedText
-            .map { elfHoldings ->
-                elfHoldings.split("\n")
-                    .sumOf { it.toInt() }
-            }
+    private fun Input.parse(): List<Int> {
+        return groupedText.map { elfHoldings ->
+            elfHoldings.split("\n")
+                .sumOf { it.toInt() }
+        }
     }
 
     // 70720
-    override fun part1(input: List<Int>): Any {
-        return input.maxOf { it }
+    override fun part1(input: Input): Any {
+        return input.parse().maxOf { it }
     }
 
     // 207148
-    override fun part2(input: List<Int>): Any {
+    override fun part2(input: Input): Any {
         return input
+            .parse()
             .sortedDescending()
             .take(3)
             .sum()

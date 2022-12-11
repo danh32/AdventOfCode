@@ -8,16 +8,13 @@ fun main() {
     Day14.run("2021/14.txt")
 }
 
-object Day14 : Day<List<String>>() {
+object Day14 : Day {
 
-    override fun parseInput(input: Input): List<String> {
-        return input.lines
-    }
-
-    override fun part1(input: List<String>): String {
-        val template = input.first().toMutableList()
+    override fun part1(input: Input): String {
+        val lines = input.lines
+        val template = lines.first().toMutableList()
         val instructions = mutableMapOf<Pair<Char, Char>, Char>()
-        input.subList(2, input.size)
+        lines.subList(2, lines.size)
             .map { line ->
                 val (from, to) = line.split(" -> ")
                 val a = from[0]
@@ -36,15 +33,16 @@ object Day14 : Day<List<String>>() {
         return "$max - $min = ${max - min}"
     }
 
-    override fun part2(input: List<String>): String {
-        val template = input.first()
+    override fun part2(input: Input): String {
+        val lines = input.lines
+        val template = lines.first()
         val pairCounts = mutableMapOf<Pair<Char, Char>, Long>()
         template.windowed(2).forEach { p ->
             pairCounts[p[0] to p[1]] = 1L
         }
 
         val instructions = mutableMapOf<Pair<Char, Char>, Char>()
-        input.subList(2, input.size)
+        lines.subList(2, lines.size)
             .map { line ->
                 val (from, to) = line.split(" -> ")
                 val a = from[0]

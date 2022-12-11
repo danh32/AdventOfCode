@@ -4,19 +4,18 @@ import co.danhill.aoc.util.*
 
 fun main() = Day08.run("2022/08.txt")
 
-object Day08 : Day<Grid<Int>>() {
-    override fun parseInput(input: Input): Grid<Int> {
-        return input.lines
-            .toIntGrid()
+object Day08 : Day {
+    private fun Input.parse(): Grid<Int> = lines.toIntGrid()
+
+    override fun part1(input: Input): Any {
+        val parsed = input.parse()
+        return parsed.keys.count { parsed.isTreeVisibleFromOutside(it) }
     }
 
-    override fun part1(input: Grid<Int>): Any {
-        return input.keys.count { input.isTreeVisibleFromOutside(it) }
-    }
-
-    override fun part2(input: Grid<Int>): Any {
-        return input.keys.maxOf { point ->
-            input.scenicScore(point)
+    override fun part2(input: Input): Any {
+        val parsed = input.parse()
+        return parsed.keys.maxOf { point ->
+            parsed.scenicScore(point)
         }
     }
 
