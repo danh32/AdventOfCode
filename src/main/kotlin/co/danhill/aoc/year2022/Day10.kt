@@ -30,18 +30,15 @@ object Day10 : Day<Input>() {
 
     override fun part2(input: Input): Any {
         val instructions = input.toInstructions()
-        runCPU(instructions)
-            .joinToString("") { (cycle, register) ->
+        return runCPU(instructions)
+            .joinToString("") { (cycle, spriteIndex) ->
                 val crtPixelIndex = (cycle - 1) % 40
-                when (crtPixelIndex - register) {
-                    in -1..1 -> "#"
-                    else -> "."
-                }
+                if (crtPixelIndex - spriteIndex in -1..1) "#"
+                else "."
             }
             .chunked(40)
             .take(6)
-            .forEach { println(it) }
-        return "^^^ See printed output image above ^^^"
+            .joinToString("\n", prefix = "\n")
     }
 
     private fun runCPU(instructions: List<Instruction>): Sequence<Pair<Int, Long>> {
