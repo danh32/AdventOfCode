@@ -7,24 +7,11 @@ fun main() = Day12.run("2022/12.txt")
 object Day12 : Day {
 
     private fun Input.parse(): Triple<Grid<Char>, Point, Point> {
-        val grid = gridOf<Char>()
-        lateinit var start: Point
-        lateinit var end: Point
-        lines.forEachIndexed { y, line ->
-            line.forEachIndexed { x, c ->
-                grid[x to y] = when (c) {
-                    'S' -> {
-                        start = x to y
-                        'a'
-                    }
-                    'E' -> {
-                        end = x to y
-                        'z'
-                    }
-                    else -> c
-                }
-            }
-        }
+        val grid = lines.toCharGrid()
+        val start = grid.entries.find { (_, c) -> c == 'S' }!!.key
+        grid[start] = 'a'
+        val end = grid.entries.find { (_, c) -> c == 'E' }!!.key
+        grid[end] = 'z'
         return Triple(grid, start, end)
     }
 

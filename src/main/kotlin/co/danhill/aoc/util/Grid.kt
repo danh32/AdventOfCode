@@ -106,3 +106,13 @@ fun Collection<String>.toIntGrid(): Grid<Int> {
     }
     return grid
 }
+
+fun Collection<String>.toCharGrid(): Grid<Char> {
+    val grid = gridOf<Char>()
+    forEachIndexed { y, line ->
+        line.forEachIndexed { x, c ->
+            grid[x to y] = c
+        }
+    }
+    return grid
+}
