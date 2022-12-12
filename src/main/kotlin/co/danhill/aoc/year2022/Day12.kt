@@ -31,7 +31,7 @@ object Day12 : Day {
     override fun part2(input: Input): Any {
         val (grid, _, end) = input.parse()
         return grid.filter { (_, char) -> char == 'a' }
-            .mapNotNull { (start, _) -> grid.findPath(start, end, grid.movementCost) }
+            .map { (start, _) -> grid.findPath(start, end, grid.movementCost) }
             .filter { it.isNotEmpty() }
             .minOf { it.size - 1 }
     }
