@@ -6,7 +6,7 @@ import kotlin.math.absoluteValue
 fun <T> Grid<T>.findPath(
     start: Point,
     end: Point,
-    movementCost: (Point) -> Int,
+    movementCost: (from: Point, to: Point) -> Int,
     heuristic: Heuristic = Heuristic.ManhattanDistance,
 ): List<Point> {
     val endNode = aStarSearch(start, end, movementCost, heuristic)
@@ -22,9 +22,9 @@ fun <T> Grid<T>.findPath(
 private fun <T> Grid<T>.aStarSearch(
     start: Point,
     end: Point,
-    movementCost: (Point) -> Int,
+    movementCost: (from: Point, to: Point) -> Int,
     heuristic: Heuristic = Heuristic.ManhattanDistance,
-): Node {
+): Node? {
     val open = PriorityQueue<Node>()
     open += Node(start).apply {
         g = 0
@@ -43,10 +43,12 @@ private fun <T> Grid<T>.aStarSearch(
                 // neighbor must be on the board, and not just a step backwards
                 containsKey(neighbor) && neighbor != bestCandidate.parent?.point
             }
-            .map { point ->
-                Node(point).apply {
+            .mapNotNull { point ->
+                val cost = movementCost(bestCandidate.point, point)
+                if (cost == Int.MAX_VALUE) null
+                else Node(point).apply {
                     parent = bestCandidate
-                    g = bestCandidate.g + movementCost(point)
+                    g = bestCandidate.g + cost
                     h = heuristic.distance(point, end)
                 }
             }
@@ -63,7 +65,8 @@ private fun <T> Grid<T>.aStarSearch(
             }
         closed.addBest(bestCandidate)
     }
-    error("End never found")
+    // no path found
+    return null
 }
 
 private data class Node(

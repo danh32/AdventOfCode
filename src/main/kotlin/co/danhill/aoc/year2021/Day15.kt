@@ -17,7 +17,7 @@ object Day15 : Day {
         val path = grid.findPath(
             start,
             end,
-            movementCost = { grid[it]!! },
+            movementCost = { _, to -> grid[to]!! },
         )
         val risk = path.sumOf { if (it == start) 0 else grid[it]!! }
         return "$risk"
@@ -31,7 +31,7 @@ object Day15 : Day {
         val path = grid.findPath(
             start,
             end,
-            movementCost = { grid[it]!! },
+            movementCost = { _, to -> grid[to]!! },
         )
         val risk = path.sumOf { if (it == start) 0 else grid[it]!! }
         return "$risk"
