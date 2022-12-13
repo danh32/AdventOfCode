@@ -71,32 +71,26 @@ object Day13 : Day {
     private fun String.toPacketData(): PacketData = toPacketDataInternal(0).first
 
     private fun String.toPacketDataInternal(startIndex: Int): Pair<PacketData, Int> {
-        var currentList: MutableList<PacketData>? = null
-        var i = startIndex
+        val currentList = mutableListOf<PacketData>()
+        var i = startIndex + 1
         while (i < length) {
             when (this[i]) {
                 // start new list
                 '[' -> {
-                    if (currentList == null) {
-                        currentList = mutableListOf()
-                    } else {
-                        // consume sub-packet and advance index to the end
-                        val (subPacket, endIndex) = toPacketDataInternal(i)
-                        currentList += subPacket
-                        i = endIndex
-                    }
+                    // consume sub-packet and advance index to the end
+                    val (subPacket, endIndex) = toPacketDataInternal(i)
+                    currentList += subPacket
+                    i = endIndex
                 }
-                // finish list
-                ']' -> return PacketData.List(currentList!!) to i
+                // finish current list
+                ']' -> return PacketData.List(currentList) to i
                 ',' -> {}
-                // add Integer to list
+                // add Integer to current list
                 else -> {
                     var nextNonDigitIndex = i
-                    while (this[nextNonDigitIndex].isDigit()) {
-                        nextNonDigitIndex++
-                    }
+                    while (this[nextNonDigitIndex].isDigit()) { nextNonDigitIndex++ }
                     val integer = PacketData.Integer(this.substring(i until nextNonDigitIndex).toInt())
-                    currentList!! += integer
+                    currentList += integer
                     i = nextNonDigitIndex - 1
                 }
             }
@@ -104,6 +98,6 @@ object Day13 : Day {
             i++
         }
 
-        return PacketData.List(currentList!!) to length
+        return PacketData.List(currentList) to length
     }
 }
