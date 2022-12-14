@@ -87,7 +87,7 @@ private class MapGrid<T>(
     ) {
         for (y in yRange) {
             for (x in xRange) {
-                print(toString(get(x to y)))
+                print(toString(data.getValue(x to y)))
             }
             println()
         }
