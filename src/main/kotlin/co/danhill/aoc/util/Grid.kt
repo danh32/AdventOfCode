@@ -47,7 +47,11 @@ interface Grid<T> : MutableMap<Point, T> {
 }
 
 private class MapGrid<T>(
-    private val data: MutableMap<Point, T> = mutableMapOf()
+    private val defaultValue: ((Point) -> T)? = null,
+    private val data: MutableMap<Point, T> = mutableMapOf<Point, T>().let {
+        if (defaultValue != null) it.withDefault(defaultValue)
+        else it
+    }
 ) : Grid<T>, MutableMap<Point, T> by data {
 
     private var xRange = 0..0
@@ -94,8 +98,8 @@ private class MapGrid<T>(
     }
 }
 
-fun <T> gridOf(): Grid<T> = MapGrid()
-fun <T> gridOf(data: MutableMap<Point, T>): Grid<T> = MapGrid(data)
+fun <T> gridOf(defaultValue: ((Point) -> T)? = null): Grid<T> = MapGrid(defaultValue)
+fun <T> gridOf(data: MutableMap<Point, T>): Grid<T> = MapGrid(data = data)
 
 fun Collection<String>.toIntGrid(): Grid<Int> {
     val grid = gridOf<Int>()

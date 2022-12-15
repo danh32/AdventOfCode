@@ -1,5 +1,7 @@
 package co.danhill.aoc.util
 
+import kotlin.math.absoluteValue
+
 typealias Point = Pair<Int, Int>
 
 val Point.x: Int
@@ -49,3 +51,5 @@ val Point.neighbors: List<Point>
         down,
         downRight
     )
+
+fun Point.manhattanDistanceTo(other: Point) = (x - other.x).absoluteValue + (y - other.y).absoluteValue

@@ -97,7 +97,7 @@ sealed class Heuristic(
 
     object ManhattanDistance : Heuristic(
         distance = { start: Point, end: Point ->
-            (start.x - end.x).absoluteValue + (start.y - end.y).absoluteValue
+            start.manhattanDistanceTo(end)
         }
     )
 }
