@@ -53,3 +53,10 @@ val Point.neighbors: List<Point>
     )
 
 fun Point.manhattanDistanceTo(other: Point) = (x - other.x).absoluteValue + (y - other.y).absoluteValue
+
+fun Point.step(direction: Direction): Point = when (direction) {
+    Direction.LEFT -> left
+    Direction.UP -> up
+    Direction.RIGHT -> right
+    Direction.DOWN -> down
+}
