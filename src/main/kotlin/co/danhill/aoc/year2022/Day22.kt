@@ -110,12 +110,4 @@ object Day22 : Day {
         data class Step(val steps: Int) : Instruction()
         data class Turn(val clockwise: Boolean) : Instruction()
     }
-
-    private val Direction.displayChar: Char
-        get() = when (this) {
-            Direction.LEFT -> '<'
-            Direction.UP -> '^'
-            Direction.RIGHT -> '>'
-            Direction.DOWN -> 'v'
-        }
 }

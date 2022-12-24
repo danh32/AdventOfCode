@@ -34,12 +34,14 @@ interface Grid<T> : MutableMap<Point, T> {
                         yield(this@sequenceBetween.getValue(startX to y))
                     }
                 }
+
                 startY == endY -> {
                     val range = if (startX < endX) startX..endX else startX.downTo(endX)
                     for (x in range) {
                         yield(this@sequenceBetween.getValue(x to startY))
                     }
                 }
+
                 else -> error("$start and $end must share a row or column")
             }
         }
@@ -120,3 +122,19 @@ fun Collection<String>.toCharGrid(): Grid<Char> {
     }
     return grid
 }
+
+fun <T> Grid<T>.findPath(
+    start: Point,
+    end: Point,
+    movementCost: (from: Point, to: Point) -> Int,
+    heuristic: Heuristic = Heuristic.ManhattanDistance,
+): List<Point> = Search.aStar(
+    start = start,
+    isEnd = { it == end },
+    generateNextStates = { point ->
+        point.cardinalNeighbors
+            .filter { neighbor -> containsKey(neighbor) }
+    },
+    movementCost = movementCost,
+    heuristicCostToEndState = { from -> heuristic.distance(from, end) }
+)

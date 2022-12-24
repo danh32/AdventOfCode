@@ -1,93 +1,101 @@
 package co.danhill.aoc.util
 
 import java.util.PriorityQueue
-import kotlin.math.absoluteValue
 
-fun <T> Grid<T>.findPath(
-    start: Point,
-    end: Point,
-    movementCost: (from: Point, to: Point) -> Int,
-    heuristic: Heuristic = Heuristic.ManhattanDistance,
-): List<Point> {
-    val endNode = aStarSearch(start, end, movementCost, heuristic)
-    val reversePath = mutableListOf<Point>()
-    var current: Node? = endNode
-    while (current != null) {
-        reversePath.add(current.point)
-        current = current.parent
-    }
-    return reversePath.reversed()
-}
-
-private fun <T> Grid<T>.aStarSearch(
-    start: Point,
-    end: Point,
-    movementCost: (from: Point, to: Point) -> Int,
-    heuristic: Heuristic = Heuristic.ManhattanDistance,
-): Node? {
-    val open = PriorityQueue<Node>()
-    open += Node(start).apply {
-        g = 0
-        h = heuristic.distance(start, end)
-    }
-    val closed = mutableMapOf<Point, Node>()
-    while (open.isNotEmpty()) {
-        val bestCandidate = open.remove()
-        if (bestCandidate.point == end) {
-            return bestCandidate
+object Search {
+    fun <T> aStar(
+        start: T,
+        isEnd: (T) -> Boolean,
+        generateNextStates: (T) -> List<T>,
+        movementCost: (from: T, to: T) -> Int,
+        heuristicCostToEndState: (from: T) -> Int,
+    ): List<T> {
+        val endNode = findEnd(start, isEnd, generateNextStates, movementCost, heuristicCostToEndState)
+        val reversePath = mutableListOf<T>()
+        var current: Node<T>? = endNode
+        while (current != null) {
+            reversePath.add(current.data)
+            current = current.parent
         }
+        return reversePath.reversed()
+    }
 
-        bestCandidate.point
-            .cardinalNeighbors
-            .filter { neighbor ->
-                // neighbor must be on the board, and not just a step backwards
-                containsKey(neighbor) && neighbor != bestCandidate.parent?.point
+    private fun <T> findEnd(
+        start: T,
+        isEnd: (T) -> Boolean,
+        generateNextStates: (T) -> List<T>,
+        movementCost: (from: T, to: T) -> Int,
+        heuristicCostToEndState: (from: T) -> Int,
+    ): Node<T>? {
+        val open = PriorityQueue<Node<T>>(250)
+        open += Node(
+            data = start,
+            g = 0,
+            h = heuristicCostToEndState(start),
+        )
+        val closed = mutableMapOf<T, Int>()
+        while (open.isNotEmpty()) {
+            val bestCandidate = open.remove()
+            if (isEnd(bestCandidate.data)) {
+                return bestCandidate
             }
-            .mapNotNull { point ->
-                val cost = movementCost(bestCandidate.point, point)
-                if (cost == Int.MAX_VALUE) null
-                else Node(point).apply {
-                    parent = bestCandidate
-                    g = bestCandidate.g + cost
-                    h = heuristic.distance(point, end)
-                }
-            }
-            .forEach { candidate ->
-                open.removeIf { it.point == candidate.point && it.f > candidate.f }
-                closed[candidate.point]?.let{ previouslyClosed ->
-                    if (candidate.f < previouslyClosed.f) {
-                        closed.remove(candidate.point)
+
+            generateNextStates(bestCandidate.data)
+                // don't step backwards
+                .filter { it != bestCandidate.parent?.data }
+                .mapNotNull { nextCandidate ->
+                    val cost = movementCost(bestCandidate.data, nextCandidate)
+                    if (cost == Int.MAX_VALUE) null
+                    else Node(
+                        data = nextCandidate,
+                        g = bestCandidate.g + cost,
+                        h = heuristicCostToEndState(nextCandidate),
+                    ).apply {
+                        parent = bestCandidate
                     }
                 }
-                if (!open.contains(candidate) && !closed.contains(candidate.point)) {
-                    open.add(candidate)
+                .forEach { candidate ->
+                    // remove from consideration any states identical to this one, but more costly
+                    open.removeIf { it.data == candidate.data && it.f > candidate.f }
+                    // reopen the state if we've found a cheaper way to get there
+                    closed[candidate.data]?.let { previouslyClosedF ->
+                        if (candidate.f < previouslyClosedF) {
+                            closed.remove(candidate.data)
+                        }
+                    }
+                    // open to consideration if not already open and not already closed
+                    if (!open.contains(candidate) && !closed.contains(candidate.data)) {
+                        open.add(candidate)
+                    }
                 }
-            }
-        closed.addBest(bestCandidate)
+
+            // finally, close the point
+            closed.addBest(bestCandidate)
+        }
+        // no path found
+        return null
     }
-    // no path found
-    return null
 }
 
-private data class Node(
-    val point: Point,
-) : Comparable<Node> {
-    var parent: Node? = null
-    var g: Int = 0
-    var h: Int = 0
+private data class Node<T>(
+    val data: T,
+    val g: Int = 0,
+    val h: Int = 0,
+) : Comparable<Node<T>> {
+    var parent: Node<T>? = null
 
     val f: Int
         get() = g + h
 
-    override fun compareTo(other: Node): Int {
+    override fun compareTo(other: Node<T>): Int {
         return f - other.f
     }
 }
 
-private fun MutableMap<Point, Node>.addBest(node: Node) {
-    val currentF = get(node.point)?.f ?: Int.MAX_VALUE
+private fun <T> MutableMap<T, Int>.addBest(node: Node<T>) {
+    val currentF = get(node.data) ?: Int.MAX_VALUE
     if (node.f < currentF) {
-        set(node.point, node)
+        set(node.data, node.f)
     }
 }
 

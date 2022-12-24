@@ -12,6 +12,14 @@ enum class Direction {
         return values[((newOrdinal % values.size) + values.size) % values.size]
     }
 
+    val displayChar: Char
+        get() = when (this) {
+            LEFT -> '<'
+            UP -> '^'
+            RIGHT -> '>'
+            DOWN -> 'v'
+        }
+
     companion object {
         val values = values()
     }
