@@ -10,7 +10,12 @@ interface Day {
         var result: Any
 
         time = measureTimeMillis {
-            result = part1(readFile(filename))
+            result = try {
+                part1(readFile(filename))
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                "Errored out."
+            }
         }
         println("Part 1: $result")
         println("\t($time millis)")

@@ -2,7 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
+import co.danhill.aoc.util.Search
 import co.danhill.aoc.util.lines
+import java.util.PriorityQueue
+import kotlin.math.min
 
 fun main() = Day16.run("2022/16_test.txt")
 
@@ -15,98 +18,246 @@ object Day16 : Day {
                 name = split[1],
                 flowRate = split[4].removePrefix("rate=").dropLast(1).toInt(),
                 tunnels = split.slice(9 until split.size).map { it.removeSuffix(",") },
-                open = false,
             )
         }
         .associateBy { it.name }
 
     override fun part1(input: Input): Any {
+//        if (true) error("Faaaack")
         val valves = input.parse()
         val start = valves.getValue("AA")
 
-        val path = computeBestPath(valves, start, 30)
-        for ((action, valve) in path) {
-            println("$action ${valve.name}")
+        val states = PriorityQueue<State>()
+        states += State(
+            minutesLeft = 30,
+            currentValve = start,
+            elephantValve = start,
+            valves = valves,
+            openValves = emptySet(),
+            projectedPressureRelieved = 0,
+        )
+        var bestSoFar = states.first()
+        val seenHashes = mutableSetOf<Int>()
+        while (states.isNotEmpty()) {
+            val next = states.first().also { states.remove(it) }
+            if (seenHashes.contains(next.hashCode())) continue
+            if (next.projectedPressureRelieved > bestSoFar.projectedPressureRelieved) {
+                bestSoFar = next
+            }
+            if (!next.isEnd) {
+                states += next.generateNextStates()
+            } else {
+                return next.projectedPressureRelieved
+            }
+            seenHashes += next.hashCode()
         }
-
-//        val toConsider = mutableListOf(start)
-//        var minute = 0
-//        while (toConsider.isNotEmpty() && minute < 30) {
-//            val current = toConsider.removeFirst()
-//            minute++
-//        }
-
-        return path.score(30)
+        return bestSoFar.projectedPressureRelieved
     }
 
     override fun part2(input: Input): Any {
-        TODO()
+//        val valves = input.parse()
+//        val start = valves.getValue("AA")
+//
+//        val states = PriorityQueue<State>()
+//        states += State(
+//            minutesLeft = 26,
+//            currentValve = start,
+//            elephantValve = start,
+//            valves = valves,
+//            openValves = emptySet(),
+//            projectedPressureRelieved = 0,
+//        )
+//
+//        var bestSoFar = states.first()
+//        val seenHashes = mutableSetOf<Int>()
+//        while (states.isNotEmpty()) {
+//            val next = states.poll()
+//            if (seenHashes.contains(next.hashCode())) continue
+//            if (next.projectedPressureRelieved > bestSoFar.projectedPressureRelieved) {
+//                bestSoFar = next
+//            }
+//            if (!next.isEnd) {
+//                states += next.generateNextStatesWithElephant()
+//            } else {
+//                return next.projectedPressureRelieved
+//            }
+//            seenHashes += next.hashCode()
+//        }
+//        return bestSoFar.projectedPressureRelieved
+
+        val valves = input.parse()
+        val start = valves.getValue("AA")
+
+        val states = PriorityQueue<State>()
+        states += State(
+            minutesLeft = 26,
+            currentValve = start,
+            elephantValve = start,
+            valves = valves,
+            openValves = emptySet(),
+            projectedPressureRelieved = 0,
+        )
+        var bestSoFar = states.first()
+        val seenHashes = mutableSetOf<Int>()
+        while (states.isNotEmpty()) {
+            val next = states.first().also { states.remove(it) }
+            if (seenHashes.contains(next.hashCode())) continue
+            if (next.projectedPressureRelieved > bestSoFar.projectedPressureRelieved) {
+                bestSoFar = next
+            }
+            if (!next.isEnd) {
+                states += next.generateNextStates()
+            } else {
+                return next.projectedPressureRelieved
+            }
+            seenHashes += next.hashCode()
+        }
+
+        val elephantStart = bestSoFar.copy(
+            minutesLeft = 26,
+            currentValve = start,
+        )
+        states.clear()
+        states.add(elephantStart)
+        bestSoFar = states.first()
+        seenHashes.clear()
+        while (states.isNotEmpty()) {
+            val next = states.first().also { states.remove(it) }
+            if (seenHashes.contains(next.hashCode())) continue
+            if (next.projectedPressureRelieved > bestSoFar.projectedPressureRelieved) {
+                bestSoFar = next
+            }
+            if (!next.isEnd) {
+                states += next.generateNextStates()
+            } else {
+                return next.projectedPressureRelieved
+            }
+            seenHashes += next.hashCode()
+        }
+        return bestSoFar.projectedPressureRelieved
+    }
+
+    private fun PriorityQueue<State>.putBest(state: State) {
+
+    }
+
+    private data class State(
+        val minutesLeft: Int,
+        val currentValve: Valve,
+        val elephantValve: Valve,
+        val valves: Map<String, Valve>,
+        val openValves: Set<String>,
+        val projectedPressureRelieved: Int,
+    ) : Comparable<State> {
+
+        val searchScore = (Int.MAX_VALUE / 2) - projectedPressureRelieved
+
+        val heuristicScore = (Int.MAX_VALUE / 2) - (unopenedFlowPressure() * (minutesLeft - 1))
+
+        val newScore = projectedPressureRelieved + (unopenedFlowPressure() * (minutesLeft - 1))
+        val newestScore = (Int.MAX_VALUE / 2) - newScore
+
+        val isEnd = minutesLeft == 0 || allNonzeroAreOpen()
+
+        fun generateNextStates(): List<State> {
+            val nextStates = currentValve.tunnels
+                .map { tunnel ->
+                    copy(
+                        minutesLeft = minutesLeft - 1,
+                        currentValve = valves[tunnel]!!,
+                    )
+                }.toMutableList()
+
+            if (currentValve.canOpen()) {
+                nextStates += openCurrentValve()
+            }
+            return nextStates
+        }
+
+        fun generateNextStatesWithElephant(): List<State> {
+            val nextStates = currentValve.tunnels
+                .map { tunnel ->
+                    elephantValve.tunnels.map { et ->
+                        copy(
+                            minutesLeft = minutesLeft - 1,
+                            currentValve = valves[tunnel]!!,
+                            elephantValve = valves[et]!!,
+                        )
+                    }
+                }
+                .toMutableList()
+
+            val weCanOpen = currentValve.canOpen()
+            val elephantCanOpen = elephantValve.canOpen()
+            // we open, elephant moves
+            if (weCanOpen) {
+                val weOpenValves = openValves.toMutableSet().also { it += currentValve.name }
+                val weOpenFlowRate = projectedPressureRelieved + (currentValve.flowRate * (minutesLeft - 1))
+                nextStates += elephantValve.tunnels.map { et ->
+                    copy(
+                        minutesLeft = minutesLeft - 1,
+                        elephantValve = valves[et]!!,
+                        openValves = weOpenValves,
+                        projectedPressureRelieved = weOpenFlowRate,
+                    )
+                }
+            }
+
+            // elephant opens, we move
+            if (elephantCanOpen) {
+                val elephantOpenValves = openValves.toMutableSet().also { it += elephantValve.name }
+                val elephantOpenFlowRate = projectedPressureRelieved + (elephantValve.flowRate * (minutesLeft - 1))
+                nextStates += currentValve.tunnels.map { tunnel ->
+                    copy(
+                        minutesLeft = minutesLeft - 1,
+                        currentValve = valves[tunnel]!!,
+                        openValves = elephantOpenValves,
+                        projectedPressureRelieved = elephantOpenFlowRate,
+                    )
+                }
+            }
+
+            // we both open
+            if (weCanOpen && elephantCanOpen && currentValve != elephantValve) {
+                nextStates += listOf(
+                    copy(
+                        minutesLeft = minutesLeft - 1,
+                        openValves = openValves.toMutableSet().also {
+                            it += currentValve.name
+                            it += elephantValve.name
+                        },
+                        projectedPressureRelieved = projectedPressureRelieved + ((currentValve.flowRate + elephantValve.flowRate) * (minutesLeft - 1)),
+                    )
+                )
+            }
+            return nextStates.flatten().distinct()
+        }
+
+
+        private fun openCurrentValve(): State {
+            if (currentValve.isOpen()) error("Current valve ${currentValve.name} already open!")
+            return copy(
+                minutesLeft = minutesLeft - 1,
+                openValves = openValves.toMutableSet().also { it += currentValve.name },
+                projectedPressureRelieved = projectedPressureRelieved + (currentValve.flowRate * (minutesLeft - 1)),
+            )
+        }
+
+        override fun compareTo(other: State): Int {
+            return this.newestScore.compareTo(other.newestScore)
+        }
+
+        private fun allNonzeroAreOpen(): Boolean = valves.values.all { it.flowRate == 0 || it.isOpen() }
+
+        private fun unopenedFlowPressure(): Int = valves.values.sumOf { if (it.isOpen()) 0 else it.flowRate }
+
+        private fun Valve.isOpen() = openValves.contains(this.name)
+        private fun Valve.canOpen() = !isOpen() && flowRate > 0
     }
 
     private data class Valve(
         val name: String,
         val flowRate: Int,
         val tunnels: List<String>,
-        val open: Boolean,
-    ) {
-    }
-
-    private enum class Action {
-        MOVE_TO,
-        OPEN,
-        ;
-    }
-
-    private fun Map<String, Valve>.allNonzeroAreOpen(): Boolean = values.all { it.flowRate == 0 || it.open }
-
-    private fun Map<String, Valve>.totalFlowRate(): Int = values.sumOf { if (it.open) it.flowRate else 0 }
-
-    private fun Map<String, Valve>.releasedPressure(): Int = values.sumOf { if (it.open) it.flowRate else 0 }
-
-    private fun computeBestPath(
-        valves: Map<String, Valve>,
-        currentValve: Valve,
-        minutesLeft: Int,
-    ): List<Pair<Action, Valve>> {
-        if (minutesLeft == 0 || valves.allNonzeroAreOpen()) {
-            return emptyList()
-        }
-
-        val possibilities = mutableListOf<List<Pair<Action, Valve>>>()
-        if (!currentValve.open && currentValve.flowRate != 0) {
-            val newValves = valves.toMutableMap()
-            val newCurrentValve = currentValve.copy(open = true)
-            newValves[currentValve.name] = newCurrentValve
-            possibilities += listOf(Action.OPEN to currentValve) + computeBestPath(
-                valves = newValves,
-                currentValve = newCurrentValve,
-                minutesLeft = minutesLeft - 1,
-            )
-        }
-        // can open current valve, or move to any others
-        currentValve.tunnels.forEach { tunnel ->
-            val nextValve = valves.getValue(tunnel)
-            possibilities += listOf(Action.MOVE_TO to nextValve) + computeBestPath(
-                valves = valves,
-                currentValve = nextValve,
-                minutesLeft = minutesLeft - 1,
-            )
-        }
-
-        return possibilities.maxBy { it.score(minutesLeft) }
-    }
-
-    private fun List<Pair<Action, Valve>>.score(totalTime: Int): Int {
-        return withIndex()
-            .sumOf { (index, pair) ->
-                val (action, valve) = pair
-                when (action) {
-                    Action.MOVE_TO -> 0
-                    Action.OPEN -> {
-                        val minutesLeft = totalTime - index - 1
-                        minutesLeft * valve.flowRate
-                    }
-                }
-            }
-    }
+    )
 }

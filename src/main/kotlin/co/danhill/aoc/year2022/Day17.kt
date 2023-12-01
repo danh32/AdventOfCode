@@ -17,8 +17,8 @@ object Day17 : Day {
             }
 
             println("Rocks added $rocksAdded, i = $i")
-            grid.printEmBois(currentRock)
-            println()
+//            grid.printEmBois(currentRock)
+//            println()
 
             if (i % 2 == 0) {
                 // jetstream turn
@@ -58,6 +58,8 @@ object Day17 : Day {
             }
         }
 
+        println("Finished")
+        grid.printEmBois(currentRock ?: grid.spawnNextRock())
         return grid.maxY
     }
 
