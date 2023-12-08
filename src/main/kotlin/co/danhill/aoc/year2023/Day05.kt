@@ -2,31 +2,60 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
+import co.danhill.aoc.util.groupedText
 
-fun main() = Day05.run("2023/05.txt")
+fun main() = Day05.run("2023/05_test.txt")
 
 object Day05 : Day {
     override fun part1(input: Input): Any {
-        return input.lines.count { it.isNice() }
+        val groups = input.groupedText
+        val seedNumbers = groups.first().split(' ').mapNotNull { it.toIntOrNull() }
+        val mapRanges = groups.subList(1, groups.size)
+            .map { group ->
+                val lines = group.split('\n')
+                MapRange(
+                    name = lines.first(),
+                    ranges = lines.subList(1, lines.size)
+                        .map { line ->
+                            val (destStart, sourceStart, length) = line.split(' ').map { it.toInt() }
+                            MapRange.Range(sourceStart, destStart, length)
+                        },
+                )
+            }
+
+        return seedNumbers.minOf { seedNumber ->
+            mapRanges.fold(seedNumber) { id, map -> map.map(id) }
+        }
     }
 
     override fun part2(input: Input): Any {
         return ""
     }
 
-    private fun String.isNice() = vowelsCount > 2 && containsDoubleLetter && noForbiddenClusters
+    data class MapRange(
+        val name: String,
+        val ranges: List<Range>,
+    ) {
+        data class Range(
+            val sourceStart: Int,
+            val destinationStart: Int,
+            val length: Int,
+        ) {
+            val sourceRange = sourceStart..(sourceStart + length)
+            val destinationRange = destinationStart..(destinationStart + length)
 
-    private val vowels = setOf('a', 'e', 'i', 'o', 'u')
-    private val String.vowelsCount: Int
-        get() = count { c -> vowels.contains(c) }
+            fun map(sourceId: Int): Int {
+                return if (sourceId in sourceRange) {
+                    destinationStart + sourceId - sourceStart
+                } else {
+                    error("$sourceId not in range $sourceRange")
+                }
+            }
+        }
 
-    private val String.containsDoubleLetter: Boolean
-        get() = windowed(2, 1)
-            .any { chunk -> chunk[0] == chunk[1] }
-
-    private val forbiddenClusters = setOf("ab", "cd", "pq", "xy")
-    private val String.noForbiddenClusters: Boolean
-        get() = windowed(2, 1)
-            .none { chunk -> forbiddenClusters.contains(chunk) }
+        fun map(sourceId: Int): Int {
+            val range = ranges.firstOrNull { sourceId in it.sourceRange }
+            return range?.map(sourceId) ?: sourceId
+        }
+    }
 }
