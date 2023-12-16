@@ -28,7 +28,18 @@ object Day06 : Day {
     }
 
     override fun part2(input: Input): Any {
-        return ""
+        val (timeLine, distanceLine) = input.lines
+        val time = timeLine.filter { it.isDigit() }.toLong()
+        val distance = distanceLine.filter { it.isDigit() }.toLong()
+        val firstWin = (0..time).first { holdTime ->
+            val dist = holdTime * (time - holdTime)
+            dist > distance
+        }
+        val lastWin = (0..time).reversed().first { holdTime ->
+            val dist = holdTime * (time - holdTime)
+            dist > distance
+        }
+        return lastWin - firstWin + 1
     }
 
     private fun String.getNumbers() = split(' ')

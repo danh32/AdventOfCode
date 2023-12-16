@@ -46,6 +46,8 @@ interface Grid<T> : MutableMap<Point, T> {
             }
         }
     }
+
+    fun contains(point: Point) = point.x in minX..maxX && point.y in minY..maxY
 }
 
 private class MapGrid<T>(
