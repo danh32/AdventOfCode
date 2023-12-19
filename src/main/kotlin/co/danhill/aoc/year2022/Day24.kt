@@ -48,7 +48,7 @@ object Day24 : Day {
         initialState: State,
         target: Point,
     ): Pair<Int, State> {
-        val generateNextStates: (State) -> List<State> = { state ->
+        val generateNextStates: (State, Sequence<State>) -> List<State> = { state, _ ->
             val (position, blizzards) = state
             val nextBlizzards = blizzards.map { it.step(initialGrid) }
             state.blizzards = emptyList() // OOM avoidance!

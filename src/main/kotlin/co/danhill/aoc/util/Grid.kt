@@ -129,14 +129,15 @@ fun <T> Grid<T>.findPath(
     start: Point,
     end: Point,
     movementCost: (from: Point, to: Point) -> Int,
-    heuristic: Heuristic = Heuristic.ManhattanDistance,
-): List<Point> = Search.aStar(
-    start = start,
-    isEnd = { it == end },
-    generateNextStates = { point ->
+    heuristic: (from: Point, to: Point) -> Int = { a, b -> a.manhattanDistanceTo(b) },
+    generateNextStates: (Point, Sequence<Point>) -> List<Point> = { point, _ ->
         point.cardinalNeighbors
             .filter { neighbor -> containsKey(neighbor) }
     },
+): List<Point> = Search.aStar(
+    start = start,
+    isEnd = { it == end },
+    generateNextStates = generateNextStates,
     movementCost = movementCost,
-    heuristicCostToEndState = { from -> heuristic.distance(from, end) }
+    heuristicCostToEndState = { from -> heuristic(from, end) }
 )

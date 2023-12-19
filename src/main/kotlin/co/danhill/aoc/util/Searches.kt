@@ -1,12 +1,12 @@
 package co.danhill.aoc.util
 
-import java.util.PriorityQueue
+import java.util.*
 
 object Search {
     fun <T> aStar(
         start: T,
         isEnd: (T) -> Boolean,
-        generateNextStates: (T) -> List<T>,
+        generateNextStates: (T, Sequence<T>) -> List<T>,
         movementCost: (from: T, to: T) -> Int,
         heuristicCostToEndState: (from: T) -> Int,
     ): List<T> {
@@ -23,7 +23,7 @@ object Search {
     private fun <T> findEnd(
         start: T,
         isEnd: (T) -> Boolean,
-        generateNextStates: (T) -> List<T>,
+        generateNextStates: (T, Sequence<T>) -> List<T>,
         movementCost: (from: T, to: T) -> Int,
         heuristicCostToEndState: (from: T) -> Int,
     ): Node<T>? {
@@ -40,7 +40,7 @@ object Search {
                 return bestCandidate
             }
 
-            generateNextStates(bestCandidate.data)
+            generateNextStates(bestCandidate.data, bestCandidate.historySequence().map { it.data })
                 // don't step backwards
                 .filter { it != bestCandidate.parent?.data }
                 .mapNotNull { nextCandidate ->
@@ -90,6 +90,8 @@ private data class Node<T>(
     override fun compareTo(other: Node<T>): Int {
         return f - other.f
     }
+
+    fun historySequence(): Sequence<Node<T>> = generateSequence(seed = this) { it.parent }
 }
 
 private fun <T> MutableMap<T, Int>.addBest(node: Node<T>) {
@@ -97,15 +99,4 @@ private fun <T> MutableMap<T, Int>.addBest(node: Node<T>) {
     if (node.f < currentF) {
         set(node.data, node.f)
     }
-}
-
-sealed class Heuristic(
-    val distance: (Point, Point) -> Int,
-) {
-
-    object ManhattanDistance : Heuristic(
-        distance = { start: Point, end: Point ->
-            start.manhattanDistanceTo(end)
-        }
-    )
 }

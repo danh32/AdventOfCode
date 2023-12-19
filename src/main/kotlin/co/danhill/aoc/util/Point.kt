@@ -60,3 +60,13 @@ fun Point.step(direction: Direction): Point = when (direction) {
     Direction.RIGHT -> right
     Direction.DOWN -> down
 }
+
+fun Point.directionTo(other: Point): Direction? {
+    return when (other) {
+        left -> Direction.LEFT
+        up -> Direction.UP
+        right -> Direction.RIGHT
+        down -> Direction.DOWN
+        else -> null
+    }
+}

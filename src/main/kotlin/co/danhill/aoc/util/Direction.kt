@@ -22,5 +22,13 @@ enum class Direction {
 
     companion object {
         val values = values()
+
+        fun fromChar(char: Char) = when (char) {
+            'U' -> UP
+            'D' -> DOWN
+            'L' -> LEFT
+            'R' -> RIGHT
+            else -> error("Unknown char $char")
+        }
     }
 }
