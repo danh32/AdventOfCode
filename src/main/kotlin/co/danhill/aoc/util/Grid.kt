@@ -9,6 +9,12 @@ interface Grid<T> : MutableMap<Point, T> {
     val minY: Int
     val maxY: Int
 
+    val xRange: IntRange
+        get() = minX..maxX
+
+    val yRange: IntRange
+        get() = minY..maxY
+
     fun print(
         xRange: IntRange = minX..maxX,
         yRange: IntRange = minY..maxY,
@@ -58,8 +64,8 @@ private class MapGrid<T>(
     }
 ) : Grid<T>, MutableMap<Point, T> by data {
 
-    private var xRange = 0..0
-    private var yRange = 0..0
+    override var xRange = 0..0
+    override var yRange = 0..0
 
     override val minX: Int
         get() = xRange.first
