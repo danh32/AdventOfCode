@@ -9,7 +9,6 @@ fun main() = Day08.run("2023/08.txt")
 object Day08 : Day {
     // 17263
     override fun part1(input: Input): Any {
-        return ""
         val lines = input.lines.toList()
         val sequence = lines.first()
         val map = lines.subList(2, lines.size)

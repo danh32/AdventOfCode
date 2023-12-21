@@ -26,10 +26,25 @@ object Day07 : Day {
     }
 
     override fun part2(input: Input): Any {
-        return ""
+        val handsToBids = input.lines.map { line ->
+            val (handString, bidString) = line.split(' ')
+            val hand = Hand.fromString(handString, jokerRules = true)
+            val bid = bidString.toInt()
+            hand to bid
+        }
+
+        return handsToBids
+            .sortedBy { it.first }
+            .withIndex()
+            .sumOf { (i, pair) ->
+                val (_, bid) = pair
+                bid * (i + 1)
+            }
     }
 
     enum class Card(val char: Char) {
+        JOKER('*'),
+
         TWO('2'),
         THREE('3'),
         FOUR('4'),
@@ -50,15 +65,37 @@ object Day07 : Day {
         }
 
         companion object {
-            fun fromChar(char: Char): Card {
-                return Card.values().first { it.char == char }
+            fun fromChar(char: Char, jokerRules: Boolean = false): Card {
+                return if (jokerRules && char == 'J') JOKER
+                else Card.values().first { it.char == char }
             }
         }
     }
 
     data class Hand(
         val cards: List<Card>,
+        val jokerRules: Boolean = false
     ) : Comparable<Hand> {
+
+        val cardsForComparison: List<Card> = run {
+            if (jokerRules && cards.contains(Card.JOKER)) {
+                val noJokers = cards.filter { it != Card.JOKER }
+                val groups = noJokers.groupBy { it }
+                if (groups.isEmpty()) {
+                    cards.map { Card.ACE }
+                } else {
+                    val biggestGroupSize = groups.maxOf { it.value.size }
+                    val bestCard = groups.filter { it.value.size == biggestGroupSize }
+                        .map { it.key }
+                        .sorted()
+                        .first()
+
+                    cards.map { if (it == Card.JOKER) bestCard else it }
+                }
+            } else {
+                cards
+            }
+        }
         enum class Type {
             HIGH_CARD,
             ONE_PAIR,
@@ -70,8 +107,8 @@ object Day07 : Day {
             ;
         }
 
-        val type: Type = kotlin.run {
-                val groups = cards.groupBy { it }
+        val type: Type = run {
+                val groups = cardsForComparison.groupBy { it }
                 when (groups.size) {
                     5 -> Type.HIGH_CARD
                     4 -> Type.ONE_PAIR
@@ -111,15 +148,15 @@ object Day07 : Day {
                     .map { cardIndex ->
                         cards[cardIndex].compareTo(other.cards[cardIndex])
                     }
-                    .first { it != 0 }
+                    .firstOrNull { it != 0 } ?: 0
             } else {
                 typeComparison
             }
         }
 
         companion object {
-            fun fromString(string: String): Hand {
-                return Hand(string.map { Card.fromChar(it) })
+            fun fromString(string: String, jokerRules: Boolean = false): Hand {
+                return Hand(string.map { Card.fromChar(it, jokerRules) }, jokerRules)
             }
         }
     }
