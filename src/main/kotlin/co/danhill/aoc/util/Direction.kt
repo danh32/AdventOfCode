@@ -28,6 +28,10 @@ enum class Direction {
             'D' -> DOWN
             'L' -> LEFT
             'R' -> RIGHT
+            '<' -> LEFT
+            '^' -> UP
+            '>' -> RIGHT
+            'v' -> DOWN
             else -> error("Unknown char $char")
         }
     }
