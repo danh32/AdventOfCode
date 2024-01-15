@@ -2,12 +2,11 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import kotlin.math.max
 
-fun main() = Day02.run("2023/02.txt")
+fun main() = Day02.run()
 
-object Day02 : Day {
+object Day02 : Day(2023, 2) {
     override fun part1(input: Input): Any {
         val limits = mapOf(
             "red" to 12,

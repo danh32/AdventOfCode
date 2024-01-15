@@ -2,14 +2,13 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import kotlin.math.absoluteValue
 
-fun main() = Day18.run("2022/18.txt")
+fun main() = Day18.run()
 
 private typealias Cube = Triple<Int, Int, Int>
 
-object Day18 : Day {
+object Day18 : Day(2022, 18) {
     private fun Input.parse() = lines.map { line ->
         val (x, y, z) = line.split(',').map { it.toInt() }
         Cube(x, y, z)

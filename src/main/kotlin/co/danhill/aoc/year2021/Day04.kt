@@ -4,10 +4,10 @@ import co.danhill.aoc.util.*
 import java.util.UUID
 
 fun main() {
-    Day04.run("2021/04.txt")
+    Day04.run()
 }
 
-object Day04 : Day {
+object Day04 : Day(2021, 4) {
 
     private fun Input.parse(): Pair<List<Int>, List<Board>> {
         val list = lines

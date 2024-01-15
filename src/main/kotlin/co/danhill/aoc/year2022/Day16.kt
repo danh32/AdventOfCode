@@ -2,14 +2,11 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.Search
-import co.danhill.aoc.util.lines
-import java.util.PriorityQueue
-import kotlin.math.min
+import java.util.*
 
-fun main() = Day16.run("2022/16_test.txt")
+fun main() = Day16.run()
 
-object Day16 : Day {
+object Day16 : Day(2022, 16) {
 
     private fun Input.parse() = lines
         .map { line ->

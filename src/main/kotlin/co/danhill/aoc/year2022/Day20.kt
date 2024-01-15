@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day20.run("2022/20.txt")
+fun main() = Day20.run()
 
-object Day20 : Day {
+object Day20 : Day(2022, 20) {
 
     private fun Input.parse() = lines.map { it.toLong() }
 

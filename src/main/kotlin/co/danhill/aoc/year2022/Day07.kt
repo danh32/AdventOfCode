@@ -3,11 +3,10 @@ package co.danhill.aoc.year2022
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
 import co.danhill.aoc.util.TreeNode
-import co.danhill.aoc.util.lines
 
-fun main() = Day07.run("2022/07.txt")
+fun main() = Day07.run()
 
-object Day07 : Day {
+object Day07 : Day(2022, 7) {
     private fun Input.parse(): TreeNode<FileType> {
         val root = TreeNode<FileType>(FileType.Directory("/"))
         var currentDirectory = root

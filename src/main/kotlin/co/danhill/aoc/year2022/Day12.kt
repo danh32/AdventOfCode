@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day12.run("2022/12.txt")
+fun main() = Day12.run()
 
-object Day12 : Day {
+object Day12 : Day(2022, 12) {
 
     private fun Input.parse(): Triple<Grid<Char>, Point, Point> {
         val grid = lines.toCharGrid()

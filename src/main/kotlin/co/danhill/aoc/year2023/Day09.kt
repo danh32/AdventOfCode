@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day09.run("2023/09.txt")
+fun main() = Day09.run()
 
-object Day09 : Day {
+object Day09 : Day(2023, 9) {
     override fun part1(input: Input): Any {
         val histories = input.lines.map { line ->
             line.split(' ')

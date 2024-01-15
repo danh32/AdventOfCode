@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.groupedText
 
-fun main() = Day11.run("2022/11.txt")
+fun main() = Day11.run()
 
-object Day11 : Day {
+object Day11 : Day(2022, 11) {
 
     private fun Input.toMonkeys() = this.groupedText
         .map { group ->

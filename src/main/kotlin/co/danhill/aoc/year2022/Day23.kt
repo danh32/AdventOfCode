@@ -4,9 +4,9 @@ import co.danhill.aoc.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-fun main() = Day23.run("2022/23.txt")
+fun main() = Day23.run()
 
-object Day23 : Day {
+object Day23 : Day(2022, 23) {
 
     private fun Input.parse() = lines.toCharGrid()
 

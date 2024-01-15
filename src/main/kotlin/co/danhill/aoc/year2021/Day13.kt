@@ -3,10 +3,10 @@ package co.danhill.aoc.year2021
 import co.danhill.aoc.util.*
 
 fun main() {
-    Day13.run("2021/13.txt")
+    Day13.run()
 }
 
-object Day13 : Day {
+object Day13 : Day(2021, 13) {
 
     private fun Input.parse(): Pair<MutableSet<Point>, List<Fold>> {
         val list = lines

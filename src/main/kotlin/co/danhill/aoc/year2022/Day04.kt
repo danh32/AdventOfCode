@@ -2,13 +2,12 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day04.run("2022/04.txt")
+fun main() = Day04.run()
 
 private typealias Assignments = Pair<IntRange, IntRange>
 
-object Day04 : Day {
+object Day04 : Day(2022, 4) {
 
     private fun Input.parse(): List<Assignments> {
         return lines.map { line ->

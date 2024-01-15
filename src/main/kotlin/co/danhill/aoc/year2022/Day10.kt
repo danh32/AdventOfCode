@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day10.run("2022/10.txt")
+fun main() = Day10.run()
 
-object Day10 : Day {
+object Day10 : Day(2022, 10) {
     private fun Input.toInstructions() = lines.map { line ->
         val splitLine = line.split(' ')
         when (splitLine.first()) {

@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day09.run("2022/09.txt")
+fun main() = Day09.run()
 
-object Day09 : Day {
+object Day09 : Day(2022, 9) {
 
     private fun Input.parse(): List<Pair<Char, Int>> {
         return lines.map { line ->

@@ -2,9 +2,9 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day15.run("2023/15.txt")
+fun main() = Day15.run()
 
-object Day15 : Day {
+object Day15 : Day(2023, 15) {
     override fun part1(input: Input): Any {
         return input.lines.single()
             .split(',')

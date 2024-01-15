@@ -2,14 +2,13 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import java.math.BigDecimal
 
 fun main() {
-    Day10.run("2021/10.txt")
+    Day10.run()
 }
 
-object Day10 : Day {
+object Day10 : Day(2021, 10) {
 
     override fun part1(input: Input): String {
         val sum = input.lines.sumOf { isCorrupted(it) }

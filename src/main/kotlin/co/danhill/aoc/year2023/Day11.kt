@@ -4,9 +4,9 @@ import co.danhill.aoc.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-fun main() = Day11.run("2023/11.txt")
+fun main() = Day11.run()
 
-object Day11 : Day {
+object Day11 : Day(2023, 11) {
     override fun part1(input: Input): Any {
         return input.lines.toCharGrid().calculateDistances(cost = 2L)
     }

@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day21.run("2022/21.txt")
+fun main() = Day21.run()
 
-object Day21 : Day {
+object Day21 : Day(2022, 21) {
 
     private fun Input.parse() = lines.map { line ->
         val name = line.substring(0 until 4)

@@ -2,13 +2,12 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day03.run("2022/03.txt")
+fun main() = Day03.run()
 
 typealias Rucksack = String
 
-object Day03 : Day {
+object Day03 : Day(2022, 3) {
 
     override fun part1(input: Input): Any {
         return input.lines.sumOf { rucksack ->

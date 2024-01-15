@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day20.run("2023/20.txt")
+fun main() = Day20.run()
 
-object Day20 : Day {
+object Day20 : Day(2023, 20) {
     override fun part1(input: Input): Any {
         val modules = input.getModules()
 

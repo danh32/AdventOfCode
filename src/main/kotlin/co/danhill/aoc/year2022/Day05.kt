@@ -2,16 +2,15 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.groupedText
 
-fun main() = Day05.run("2022/05.txt")
+fun main() = Day05.run()
 
 private typealias Stack = MutableList<Char>
 private typealias Stacks = List<Stack>
 private typealias Move = Triple<Int, Int, Int>
 private typealias Foo = Pair<Stacks, List<Move>>
 
-object Day05 : Day {
+object Day05 : Day(2022, 5) {
 
     private fun Input.parse(): Foo {
         val (stacksText, movesText) = groupedText

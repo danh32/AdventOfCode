@@ -3,10 +3,10 @@ package co.danhill.aoc.year2021
 import co.danhill.aoc.util.*
 
 fun main() {
-    Day15.run("2021/15.txt")
+    Day15.run()
 }
 
-object Day15 : Day {
+object Day15 : Day(2021, 15) {
 
     private fun Input.parse(): Grid<Int> = lines.toIntGrid()
 

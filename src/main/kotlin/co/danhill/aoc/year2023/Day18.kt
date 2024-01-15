@@ -2,9 +2,9 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day18.run("2023/18.txt")
+fun main() = Day18.run()
 
-object Day18 : Day {
+object Day18 : Day(2023, 18) {
     override fun part1(input: Input): Any {
         val grid = gridOf { '.' }
         var currentPoint = Point(0, 0)

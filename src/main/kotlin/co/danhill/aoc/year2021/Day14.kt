@@ -2,13 +2,12 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
 fun main() {
-    Day14.run("2021/14.txt")
+    Day14.run()
 }
 
-object Day14 : Day {
+object Day14 : Day(2021, 14) {
 
     override fun part1(input: Input): String {
         val lines = input.lines

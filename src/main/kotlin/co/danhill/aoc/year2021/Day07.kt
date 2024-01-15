@@ -2,14 +2,13 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import kotlin.math.absoluteValue
 
 fun main() {
-    Day07.run("2021/07.txt")
+    Day07.run()
 }
 
-object Day07 : Day {
+object Day07 : Day(2021, 7) {
 
     private fun Input.parse(): List<Int> {
         return lines.first().split(',').map { it.toInt() }.sorted()

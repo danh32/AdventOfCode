@@ -2,16 +2,24 @@ package co.danhill.aoc.util
 
 import kotlin.system.measureTimeMillis
 
-interface Day {
+abstract class Day(
+    private val year: Int,
+    private val day: Int,
+) {
 
-    fun run(filename: String) {
-        println("Day ${javaClass.simpleName.substring(3)}")
+    private val filename = "$year/${day.toString().padStart(2, '0')}.txt"
+
+    fun run() {
+        println("$year Day $day")
         var time: Long
         var result: Any
 
+//        val foo = readFile(filename)
+//        println("${foo.path} vs ${foo.absolutePath}")
+
         time = measureTimeMillis {
             result = try {
-                part1(readFile(filename))
+                part1(RemoteInput(year, day))
             } catch (t: Throwable) {
                 t.printStackTrace()
                 "Errored out."
@@ -21,12 +29,12 @@ interface Day {
         println("\t($time millis)")
 
         time = measureTimeMillis {
-            result = part2(readFile(filename))
+            result = part2(FileInput(filename))
         }
         println("Part 2: $result")
         println("\t($time millis)")
     }
 
-    fun part1(input: Input): Any
-    fun part2(input: Input): Any
+    abstract fun part1(input: Input): Any
+    abstract fun part2(input: Input): Any
 }

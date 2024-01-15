@@ -2,9 +2,9 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day16.run("2023/16.txt")
+fun main() = Day16.run()
 
-object Day16 : Day {
+object Day16 : Day(2023, 16) {
     override fun part1(input: Input): Any {
         return input.lines.toCharGrid().energy()
     }

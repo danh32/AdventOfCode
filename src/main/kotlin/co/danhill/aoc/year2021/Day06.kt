@@ -2,14 +2,13 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import java.math.BigDecimal
 
 fun main() {
-    Day06.run("2021/06.txt")
+    Day06.run()
 }
 
-object Day06 : Day {
+object Day06 : Day(2021, 6) {
 
     private fun Input.parse(): MutableList<BigDecimal> {
         val days = mutableListOf(

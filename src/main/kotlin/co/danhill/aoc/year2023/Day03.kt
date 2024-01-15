@@ -2,9 +2,9 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day03.run("2023/03.txt")
+fun main() = Day03.run()
 
-object Day03 : Day {
+object Day03 : Day(2023, 3) {
     override fun part1(input: Input): Any {
         val grid = input.lines.toCharGrid()
         return grid

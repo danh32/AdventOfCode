@@ -4,11 +4,11 @@ import co.danhill.aoc.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-fun main() = Day22.run("2023/22_test.txt")
+fun main() = Day22.run()
 
 private typealias Point3d = Triple<Int, Int, Int>
 
-object Day22 : Day {
+object Day22 : Day(2023, 22) {
     override fun part1(input: Input): Any {
         val bricks = input.lines.mapIndexed { index, line ->
             val (start, end) = line.split('~')

@@ -2,13 +2,12 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
 fun main() {
-    Day12.run("2021/12.txt")
+    Day12.run()
 }
 
-object Day12 : Day {
+object Day12 : Day(2021, 12) {
 
     override fun part1(input: Input): String {
         val startCave = parseCaves(input.lines)

@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day04.run("2023/04.txt")
+fun main() = Day04.run()
 
-object Day04 : Day {
+object Day04 : Day(2023, 4) {
     override fun part1(input: Input): Any {
         return input.toCards().sumOf { it.points }
     }

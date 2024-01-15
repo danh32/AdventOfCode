@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.groupedText
 
-fun main() = Day01.run("2022/01.txt")
+fun main() = Day01.run()
 
-object Day01 : Day {
+object Day01 : Day(2022, 1) {
 
     private fun Input.parse(): List<Int> {
         return groupedText.map { elfHoldings ->

@@ -2,13 +2,12 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
 fun main() {
-    Day02.run("2021/02.txt")
+    Day02.run()
 }
 
-object Day02 : Day {
+object Day02 : Day(2021, 2) {
 
     data class Step(
         val direction: Direction,

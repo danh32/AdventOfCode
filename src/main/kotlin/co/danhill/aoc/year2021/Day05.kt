@@ -4,10 +4,10 @@ import co.danhill.aoc.util.*
 
 fun main() {
     // 6007, 19349
-    Day05.run("2021/05.txt")
+    Day05.run()
 }
 
-object Day05 : Day {
+object Day05 : Day(2021, 5) {
 
     override fun part1(input: Input): String {
         val grid = gridOf<Int>()

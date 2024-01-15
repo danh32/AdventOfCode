@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day01.run("2023/01.txt")
+fun main() = Day01.run()
 
-object Day01 : Day {
+object Day01 : Day(2023, 1) {
     override fun part1(input: Input): Any {
         return input.lines.sumOf { line ->
             val first = line.first { it.isDigit() }

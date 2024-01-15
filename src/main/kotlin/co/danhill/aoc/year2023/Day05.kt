@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.groupedText
 
-fun main() = Day05.run("2023/05.txt")
+fun main() = Day05.run()
 
-object Day05 : Day {
+object Day05 : Day(2023, 5) {
     override fun part1(input: Input): Any {
         val groups = input.groupedText
         val seedNumbers = groups.first().split(' ').mapNotNull { it.toLongOrNull() }

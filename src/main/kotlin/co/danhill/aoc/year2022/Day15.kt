@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day15.run("2022/15.txt")
+fun main() = Day15.run()
 
-object Day15 : Day {
+object Day15 : Day(2022, 15) {
 
     private fun Input.parse() = lines.map { line ->
         val (sensorText, beaconText) = line.removePrefix("Sensor at x=").split(": closest beacon is at x=")

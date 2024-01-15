@@ -2,11 +2,10 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
-fun main() = Day07.run("2023/07.txt")
+fun main() = Day07.run()
 
-object Day07 : Day {
+object Day07 : Day(2023, 7) {
     // 249638405
     override fun part1(input: Input): Any {
         val handsToBids = input.lines.map { line ->

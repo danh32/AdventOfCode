@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day14.run("2022/14.txt")
+fun main() = Day14.run()
 
-object Day14 : Day {
+object Day14 : Day(2022, 14) {
     private val sandOrigin = 500 to 0
 
     private fun Input.parse() = lines

@@ -2,9 +2,9 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day17.run("2023/17_test.txt")
+fun main() = Day17.run()
 
-object Day17 : Day {
+object Day17 : Day(2023, 17) {
     override fun part1(input: Input): Any {
         val grid = input.lines.toIntGrid()
         val path = grid.findPath(

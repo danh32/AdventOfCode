@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day22.run("2022/22.txt")
+fun main() = Day22.run()
 
-object Day22 : Day {
+object Day22 : Day(2022, 22) {
 
     private fun Input.parse(): Pair<Grid<Char>, List<Instruction>> {
         val (mapLines, directionText) = groupedText

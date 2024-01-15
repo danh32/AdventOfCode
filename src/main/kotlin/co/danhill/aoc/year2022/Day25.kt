@@ -2,12 +2,11 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 import java.math.BigInteger
 
-fun main() = Day25.run("2022/25.txt")
+fun main() = Day25.run()
 
-object Day25 : Day {
+object Day25 : Day(2022, 25) {
 
     private val snafuToDecimalMap = mapOf(
         '=' to (-2).toBigInteger(),

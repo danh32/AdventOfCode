@@ -2,12 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.groupedText
-import co.danhill.aoc.util.lines
 
-fun main() = Day13.run("2022/13.txt")
+fun main() = Day13.run()
 
-object Day13 : Day {
+object Day13 : Day(2022, 13) {
 
     override fun part1(input: Input): Any {
         return input.groupedText

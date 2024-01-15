@@ -2,9 +2,9 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.*
 
-fun main() = Day24.run("2022/24.txt")
+fun main() = Day24.run()
 
-object Day24 : Day {
+object Day24 : Day(2022, 24) {
     private fun Input.parse() = lines.toCharGrid()
 
     override fun part1(input: Input): Any {

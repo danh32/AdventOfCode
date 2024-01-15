@@ -2,13 +2,12 @@ package co.danhill.aoc.year2021
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.lines
 
 fun main() {
-    Day01.run("2021/01.txt")
+    Day01.run()
 }
 
-object Day01 : Day {
+object Day01 : Day(2021, 1) {
 
     private fun Input.parse(): List<Int> = lines.map { it.toInt() }
 

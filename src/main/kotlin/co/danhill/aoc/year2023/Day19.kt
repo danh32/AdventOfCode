@@ -2,11 +2,11 @@ package co.danhill.aoc.year2023
 
 import co.danhill.aoc.util.*
 
-fun main() = Day19.run("2023/19.txt")
+fun main() = Day19.run()
 
 typealias Part = MutableMap<Char, Int>
 
-object Day19 : Day {
+object Day19 : Day(2023, 19) {
     override fun part1(input: Input): Any {
         val (rulesGroup, partsGroup) = input.groupedText
         val workflows = rulesGroup.split('\n')

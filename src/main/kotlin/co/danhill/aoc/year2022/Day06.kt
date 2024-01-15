@@ -2,11 +2,10 @@ package co.danhill.aoc.year2022
 
 import co.danhill.aoc.util.Day
 import co.danhill.aoc.util.Input
-import co.danhill.aoc.util.text
 
-fun main() = Day06.run("2022/06.txt")
+fun main() = Day06.run()
 
-object Day06 : Day {
+object Day06 : Day(2022, 6) {
     override fun part1(input: Input): Any {
         return input.text.startOfPacketMarkerIndex
     }

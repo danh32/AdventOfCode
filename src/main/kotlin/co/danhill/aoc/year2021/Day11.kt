@@ -3,10 +3,10 @@ package co.danhill.aoc.year2021
 import co.danhill.aoc.util.*
 
 fun main() {
-    Day11.run("2021/11.txt")
+    Day11.run()
 }
 
-object Day11 : Day {
+object Day11 : Day(2021, 11) {
 
     private fun Input.parse(): Grid<Int> {
         val grid = gridOf<Int>()
